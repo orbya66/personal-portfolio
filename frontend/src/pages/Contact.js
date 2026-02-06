@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { HUDFrame } from '../components/HUDFrame';
 import { GlitchText } from '../components/GlitchText';
 import { Mail, Linkedin, Instagram, Youtube, Send } from 'lucide-react';
@@ -46,13 +45,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen pt-16 grid-pattern">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        {/* Header */}
-        <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <div className="mb-16 text-center animate-fade-in-up">
           <div className="mb-4">
             <span className="inline-block px-4 py-1 border border-[#FF4D00]/50 bg-black/50 backdrop-blur-sm text-[#FF4D00] font-mono text-xs tracking-widest">
               COMMS_CHANNEL: OPEN
@@ -64,16 +57,10 @@ export default function Contact() {
           <p className="text-white/60 font-mono text-sm max-w-2xl mx-auto">
             Establish secure connection for project inquiries and collaborations
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Contact Form */}
-          <motion.div
-            className="lg:col-span-2"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="lg:col-span-2 opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
             <HUDFrame className="p-8 bg-black/50 backdrop-blur-sm">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -142,12 +129,9 @@ export default function Contact() {
                   />
                 </div>
 
-                {/* Status Message */}
                 {status.message && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`p-4 border font-mono text-xs tracking-wider ${
+                  <div
+                    className={`p-4 border font-mono text-xs tracking-wider transition-opacity duration-300 ${
                       status.type === 'success'
                         ? 'border-[#00FF00] text-[#00FF00] bg-[#00FF00]/10'
                         : status.type === 'error'
@@ -157,7 +141,7 @@ export default function Contact() {
                     data-testid="contact-status-message"
                   >
                     {status.message}
-                  </motion.div>
+                  </div>
                 )}
 
                 <button
@@ -169,7 +153,6 @@ export default function Contact() {
                   <Send className="w-5 h-5" strokeWidth={2} />
                   <span>{status.type === 'loading' ? 'TRANSMITTING...' : 'SEND MESSAGE'}</span>
                   
-                  {/* Corner accents */}
                   <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#FF4D00]" />
                   <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#FF4D00]" />
                   <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[#FF4D00]" />
@@ -177,16 +160,9 @@ export default function Contact() {
                 </button>
               </form>
             </HUDFrame>
-          </motion.div>
+          </div>
 
-          {/* Social Links & Info */}
-          <motion.div
-            className="space-y-6"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            {/* Social Links */}
+          <div className="space-y-6 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
             <HUDFrame className="p-6 bg-black/50 backdrop-blur-sm">
               <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
                 Social Channels
@@ -209,7 +185,6 @@ export default function Contact() {
               </div>
             </HUDFrame>
 
-            {/* Response Time */}
             <HUDFrame className="p-6 bg-black/50 backdrop-blur-sm">
               <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
                 Response Protocol
@@ -239,24 +214,19 @@ export default function Contact() {
               </div>
             </HUDFrame>
 
-            {/* Availability */}
             <HUDFrame className="p-6 bg-black/50 backdrop-blur-sm">
               <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
                 Availability
               </h3>
               <div className="flex items-center gap-3 mb-3">
-                <motion.div
-                  className="w-3 h-3 bg-[#00FF00] rounded-full"
-                  animate={{ opacity: [1, 0.3, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
+                <div className="w-3 h-3 bg-[#00FF00] rounded-full animate-pulse" />
                 <span className="text-white font-mono text-sm">Currently Available</span>
               </div>
               <p className="text-white/50 font-mono text-xs">
                 Open to new projects and collaborations
               </p>
             </HUDFrame>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
