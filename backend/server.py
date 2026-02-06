@@ -443,6 +443,119 @@ async def update_stats(stats: List[dict]):
     return {"message": "Stats updated successfully", "stats": stats}
 
 
+# Site Configuration endpoints
+@api_router.get("/config")
+async def get_config():
+    """Get site configuration"""
+    config_file = ROOT_DIR / "data" / "config.json"
+    
+    if config_file.exists():
+        with open(config_file, 'r') as f:
+            config = json.load(f)
+            # Don't expose password in public endpoint
+            public_config = {k: v for k, v in config.items() if k != 'adminPassword'}
+            return public_config
+    
+    # Default config
+    return {
+        "siteName": "ORBYA",
+        "ownerName": "SHRUNIT SHIRKE",
+        "tagline": "CINEMATIC VIDEO EDITOR • MOTION DESIGNER • VISUAL STORYTELLER",
+        "colors": {
+            "primary": "#FF4D00",
+            "background": "#000000",
+            "text": "#FFFFFF"
+        }
+    }
+
+
+@api_router.put("/config")
+async def update_config(config: dict):
+    """Update site configuration"""
+    config_file = ROOT_DIR / "data" / "config.json"
+    
+    # Load existing config to preserve password
+    existing_config = {}
+    if config_file.exists():
+        with open(config_file, 'r') as f:
+            existing_config = json.load(f)
+    
+    # Merge with existing config (preserve password if not provided)
+    if 'adminPassword' not in config and 'adminPassword' in existing_config:
+        config['adminPassword'] = existing_config['adminPassword']
+    
+    with open(config_file, 'w') as f:
+        json.dump(config, f, indent=2)
+    
+    # Return without password
+    public_config = {k: v for k, v in config.items() if k != 'adminPassword'}
+    return {"message": "Config updated successfully", "config": public_config}
+
+
+# Admin authentication
+class AdminAuth(BaseModel):
+    password: str
+
+@api_router.post("/admin/auth")
+async def admin_authenticate(auth: AdminAuth):
+    """Authenticate admin user"""
+    config_file = ROOT_DIR / "data" / "config.json"
+    
+    if config_file.exists():
+        with open(config_file, 'r') as f:
+            config = json.load(f)
+            if auth.password == config.get('adminPassword', 'admin'):
+                return {"success": True, "message": "Authentication successful"}
+    
+    raise HTTPException(status_code=401, detail="Invalid password")
+
+
+@api_router.put("/admin/password")
+async def change_admin_password(data: dict):
+    """Change admin password"""
+    config_file = ROOT_DIR / "data" / "config.json"
+    
+    if not config_file.exists():
+        raise HTTPException(status_code=404, detail="Config file not found")
+    
+    with open(config_file, 'r') as f:
+        config = json.load(f)
+    
+    if data.get('currentPassword') != config.get('adminPassword'):
+        raise HTTPException(status_code=401, detail="Current password is incorrect")
+    
+    config['adminPassword'] = data.get('newPassword')
+    
+    with open(config_file, 'w') as f:
+        json.dump(config, f, indent=2)
+    
+    return {"success": True, "message": "Password changed successfully"}
+
+
+# Quotes endpoints
+@api_router.get("/quotes")
+async def get_all_quotes():
+    """Get all quotes"""
+    quotes_file = ROOT_DIR / "data" / "quotes.json"
+    
+    if quotes_file.exists():
+        with open(quotes_file, 'r') as f:
+            return json.load(f)
+    
+    return []
+
+
+@api_router.put("/quotes")
+async def update_quotes(quotes: List[dict]):
+    """Update all quotes"""
+    quotes_file = ROOT_DIR / "data" / "quotes.json"
+    
+    with open(quotes_file, 'w') as f:
+        json.dump(quotes, f, indent=2)
+    
+    return {"message": "Quotes updated successfully", "count": len(quotes)}
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
