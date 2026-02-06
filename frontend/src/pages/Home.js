@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { HUDFrame } from '../components/HUDFrame';
 import { GlitchText } from '../components/GlitchText';
+import { HUDFrame } from '../components/HUDFrame';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Video, Code, Mail } from 'lucide-react';
 
 export default function Home() {
