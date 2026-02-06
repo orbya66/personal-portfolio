@@ -10,10 +10,10 @@ function ReticleCursor() {
       const newPosition = { x: e.clientX, y: e.clientY };
       setMousePosition(newPosition);
       
-      // Add to trail - now synced with cursor position
+      // Add to trail - longer and more visible
       setTrail(prevTrail => {
         const newTrail = [...prevTrail, { ...newPosition, id: Date.now() + Math.random() }];
-        return newTrail.slice(-12); // Keep last 12 points
+        return newTrail.slice(-25); // Keep last 25 points for longer trail
       });
     };
 
@@ -43,10 +43,10 @@ function ReticleCursor() {
 
   return (
     <>
-      {/* Motion Trail - Reduced glow */}
+      {/* Motion Trail - More visible and longer */}
       {trail.map((point, index) => {
         const opacity = (index + 1) / trail.length;
-        const scale = 0.4 + (index / trail.length) * 0.6;
+        const scale = 0.3 + (index / trail.length) * 0.7;
         
         return (
           <div
@@ -56,17 +56,17 @@ function ReticleCursor() {
               left: `${point.x}px`,
               top: `${point.y}px`,
               transform: `translate(-50%, -50%) scale(${scale})`,
-              opacity: opacity * 0.25,
+              opacity: opacity * 0.6,
             }}
           >
-            {/* Triangular trail particles - less blur */}
-            <svg width="40" height="40" viewBox="0 0 40 40" style={{ filter: 'blur(1px)' }}>
-              <polygon 
-                points="20,8 32,28 8,28" 
-                fill="#FF4D00" 
-                opacity={opacity * 0.5}
-              />
-            </svg>
+            {/* Circular trail particles - more visible */}
+            <div 
+              className="w-3 h-3 rounded-full bg-[#FF4D00]" 
+              style={{ 
+                boxShadow: '0 0 10px rgba(255, 77, 0, 0.8)',
+                filter: 'blur(0.5px)'
+              }}
+            />
           </div>
         );
       })}
@@ -175,7 +175,7 @@ function ReticleCursor() {
           transform: 'translate(-50%, -50%)',
         }}
       >
-        <div className="w-[120px] h-[120px] rounded-full bg-[#FF4D00] opacity-5 blur-2xl" />
+        <div className="w-[100px] h-[100px] rounded-full bg-[#FF4D00] opacity-10 blur-2xl" />
       </div>
     </>
   );
