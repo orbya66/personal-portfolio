@@ -63,102 +63,102 @@ export default function Contact() {
             <div className="hud-frame p-8 bg-black/50 backdrop-blur-sm">
               <div className="hud-content">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
+                        NAME
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none transition-colors"
+                        placeholder="Enter name..."
+                        data-testid="contact-name-input"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
+                        EMAIL
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none transition-colors"
+                        placeholder="Enter email..."
+                        data-testid="contact-email-input"
+                      />
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
-                      NAME
+                      SUBJECT
                     </label>
                     <input
                       type="text"
-                      name="name"
-                      value={formData.name}
+                      name="subject"
+                      value={formData.subject}
                       onChange={handleChange}
                       required
                       className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none transition-colors"
-                      placeholder="Enter name..."
-                      data-testid="contact-name-input"
+                      placeholder="Enter subject..."
+                      data-testid="contact-subject-input"
                     />
                   </div>
 
                   <div>
                     <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
-                      EMAIL
+                      MESSAGE
                     </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
+                    <textarea
+                      name="message"
+                      value={formData.message}
                       onChange={handleChange}
                       required
-                      className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none transition-colors"
-                      placeholder="Enter email..."
-                      data-testid="contact-email-input"
+                      rows={6}
+                      className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none resize-none transition-colors"
+                      placeholder="Enter message..."
+                      data-testid="contact-message-input"
                     />
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
-                    SUBJECT
-                  </label>
-                  <input
-                    type="text"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none transition-colors"
-                    placeholder="Enter subject..."
-                    data-testid="contact-subject-input"
-                  />
-                </div>
+                  {status.message && (
+                    <div
+                      className={`p-4 border font-mono text-xs tracking-wider transition-opacity duration-300 ${
+                        status.type === 'success'
+                          ? 'border-[#00FF00] text-[#00FF00] bg-[#00FF00]/10'
+                          : status.type === 'error'
+                          ? 'border-red-500 text-red-500 bg-red-500/10'
+                          : 'border-[#FF4D00] text-[#FF4D00] bg-[#FF4D00]/10'
+                      }`}
+                      data-testid="contact-status-message"
+                    >
+                      {status.message}
+                    </div>
+                  )}
 
-                <div>
-                  <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
-                    MESSAGE
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={6}
-                    className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none resize-none transition-colors"
-                    placeholder="Enter message..."
-                    data-testid="contact-message-input"
-                  />
-                </div>
-
-                {status.message && (
-                  <div
-                    className={`p-4 border font-mono text-xs tracking-wider transition-opacity duration-300 ${
-                      status.type === 'success'
-                        ? 'border-[#00FF00] text-[#00FF00] bg-[#00FF00]/10'
-                        : status.type === 'error'
-                        ? 'border-red-500 text-red-500 bg-red-500/10'
-                        : 'border-[#FF4D00] text-[#FF4D00] bg-[#FF4D00]/10'
-                    }`}
-                    data-testid="contact-status-message"
+                  <button
+                    type="submit"
+                    disabled={status.type === 'loading'}
+                    className="relative group w-full flex items-center justify-center gap-3 px-8 py-4 bg-black/50 border-2 border-[#FF4D00] text-[#FF4D00] font-['Rajdhani'] font-bold text-lg tracking-wider uppercase hover:bg-[#FF4D00] hover:text-black transition-all duration-300 disabled:opacity-50"
+                    data-testid="contact-submit-btn"
                   >
-                    {status.message}
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={status.type === 'loading'}
-                  className="relative group w-full flex items-center justify-center gap-3 px-8 py-4 bg-black/50 border-2 border-[#FF4D00] text-[#FF4D00] font-['Rajdhani'] font-bold text-lg tracking-wider uppercase hover:bg-[#FF4D00] hover:text-black transition-all duration-300 disabled:opacity-50"
-                  data-testid="contact-submit-btn"
-                >
-                  <Send className="w-5 h-5" strokeWidth={2} />
-                  <span>{status.type === 'loading' ? 'TRANSMITTING...' : 'SEND MESSAGE'}</span>
-                  
-                  <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#FF4D00]" />
-                  <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#FF4D00]" />
-                  <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[#FF4D00]" />
-                  <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#FF4D00]" />
-                </button>
-              </form>
+                    <Send className="w-5 h-5" strokeWidth={2} />
+                    <span>{status.type === 'loading' ? 'TRANSMITTING...' : 'SEND MESSAGE'}</span>
+                    
+                    <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#FF4D00]" />
+                    <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#FF4D00]" />
+                    <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[#FF4D00]" />
+                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#FF4D00]" />
+                  </button>
+                </form>
               </div>
             </div>
           </div>
@@ -169,22 +169,22 @@ export default function Contact() {
                 <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
                   Social Channels
                 </h3>
-              <div className="space-y-3">
-                {socialLinks.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-3 border border-[#FF4D00]/30 hover:border-[#FF4D00] hover:bg-[#FF4D00]/10 transition-all group"
-                  >
-                    <link.icon className="w-5 h-5 text-[#FF4D00]" strokeWidth={1.5} />
-                    <span className="text-white font-mono text-sm group-hover:text-[#FF4D00] transition-colors">
-                      {link.label}
-                    </span>
-                  </a>
-                ))}
-              </div>
+                <div className="space-y-3">
+                  {socialLinks.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 p-3 border border-[#FF4D00]/30 hover:border-[#FF4D00] hover:bg-[#FF4D00]/10 transition-all group"
+                    >
+                      <link.icon className="w-5 h-5 text-[#FF4D00]" strokeWidth={1.5} />
+                      <span className="text-white font-mono text-sm group-hover:text-[#FF4D00] transition-colors">
+                        {link.label}
+                      </span>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -193,26 +193,27 @@ export default function Contact() {
                 <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
                   Response Protocol
                 </h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-[#FF4D00] mt-1.5 animate-pulse" />
-                  <div>
-                    <p className="text-white font-mono">Standard Response</p>
-                    <p className="text-white/50 font-mono text-xs">24-48 hours</p>
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-[#FF4D00] mt-1.5 animate-pulse" />
+                    <div>
+                      <p className="text-white font-mono">Standard Response</p>
+                      <p className="text-white/50 font-mono text-xs">24-48 hours</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-[#FF4D00] mt-1.5 animate-pulse" />
-                  <div>
-                    <p className="text-white font-mono">Priority Projects</p>
-                    <p className="text-white/50 font-mono text-xs">12-24 hours</p>
+                  <div className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-[#FF4D00] mt-1.5 animate-pulse" />
+                    <div>
+                      <p className="text-white font-mono">Priority Projects</p>
+                      <p className="text-white/50 font-mono text-xs">12-24 hours</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-[#FF4D00] mt-1.5 animate-pulse" />
-                  <div>
-                    <p className="text-white font-mono">Emergency Support</p>
-                    <p className="text-white/50 font-mono text-xs">Contact directly</p>
+                  <div className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-[#FF4D00] mt-1.5 animate-pulse" />
+                    <div>
+                      <p className="text-white font-mono">Emergency Support</p>
+                      <p className="text-white/50 font-mono text-xs">Contact directly</p>
+                    </div>
                   </div>
                 </div>
               </div>
