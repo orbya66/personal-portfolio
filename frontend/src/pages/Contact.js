@@ -159,14 +159,16 @@ export default function Contact() {
                   <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#FF4D00]" />
                 </button>
               </form>
-            </HUDFrame>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-6 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-            <HUDFrame className="p-6 bg-black/50 backdrop-blur-sm">
-              <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
-                Social Channels
-              </h3>
+            <div className="hud-frame p-6 bg-black/50 backdrop-blur-sm">
+              <div className="hud-content">
+                <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
+                  Social Channels
+                </h3>
               <div className="space-y-3">
                 {socialLinks.map((link) => (
                   <a
