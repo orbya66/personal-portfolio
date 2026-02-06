@@ -80,34 +80,38 @@ export default function Skills() {
         </div>
 
         {loading ? (
-          <div className="text-center py-20">
+          <div className="text-center py-16">
             <div className="inline-block w-16 h-16 border-4 border-[#FF4D00] border-t-transparent rounded-full animate-spin"></div>
             <p className="text-[#FF4D00] font-mono text-sm mt-4 animate-pulse">LOADING SKILLS...</p>
           </div>
         ) : error ? (
-          <div className="text-center py-20">
+          <div className="text-center py-16">
             <p className="text-red-500 font-mono text-sm">ERROR: {error}</p>
             <p className="text-white/40 font-mono text-xs mt-2">Check console for details</p>
           </div>
         ) : skills.length === 0 ? (
-          <div className="text-center py-20">
+          <div className="text-center py-16">
+            <Cpu className="w-16 h-16 text-[#FF4D00]/30 mx-auto mb-4" strokeWidth={1} />
             <p className="text-[#FF4D00] font-mono text-sm">NO SKILLS FOUND</p>
             <p className="text-white/40 font-mono text-xs mt-2">Add skills to /app/backend/data/skills.json</p>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
               <div className="opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
-                <div className="hud-frame p-8 bg-black/50 backdrop-blur-sm h-full">
+                <div className="hud-frame p-6 md:p-8 bg-black/50 backdrop-blur-sm h-full">
                   <div className="hud-content">
-                    <div className="mb-6">
-                      <h2 className="text-[#FF4D00] font-['Rajdhani'] text-2xl font-bold tracking-wide uppercase mb-2">
-                        Software Mastery
-                      </h2>
-                      <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent" />
+                    <div className="mb-6 flex items-center gap-3">
+                      <Cpu className="w-6 h-6 text-[#FF4D00]" strokeWidth={1.5} />
+                      <div>
+                        <h2 className="text-[#FF4D00] font-['Rajdhani'] text-xl md:text-2xl font-bold tracking-wide uppercase">
+                          Software Mastery
+                        </h2>
+                        <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent mt-1" />
+                      </div>
                     </div>
                     
-                    <div className="space-y-6">
+                    <div className="space-y-5">
                       {softwareSkills.map((skill, index) => (
                         <div key={skill.id}>
                           <SkillBar
@@ -126,16 +130,19 @@ export default function Skills() {
               </div>
 
               <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-                <div className="hud-frame p-8 bg-black/50 backdrop-blur-sm h-full">
+                <div className="hud-frame p-6 md:p-8 bg-black/50 backdrop-blur-sm h-full">
                   <div className="hud-content">
-                    <div className="mb-6">
-                      <h2 className="text-[#FF4D00] font-['Rajdhani'] text-2xl font-bold tracking-wide uppercase mb-2">
-                        Creative Systems
-                      </h2>
-                      <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent" />
+                    <div className="mb-6 flex items-center gap-3">
+                      <Sparkles className="w-6 h-6 text-[#FF4D00]" strokeWidth={1.5} />
+                      <div>
+                        <h2 className="text-[#FF4D00] font-['Rajdhani'] text-xl md:text-2xl font-bold tracking-wide uppercase">
+                          Creative Systems
+                        </h2>
+                        <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent mt-1" />
+                      </div>
                     </div>
                     
-                    <div className="space-y-6">
+                    <div className="space-y-5">
                       {creativeSkills.map((skill, index) => (
                         <div key={skill.id}>
                           <SkillBar
@@ -154,24 +161,25 @@ export default function Skills() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-10 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
               {[
-                { label: 'Projects', value: '150+', unit: 'COMPLETED' },
-                { label: 'Experience', value: '5+', unit: 'YEARS' },
-                { label: 'Clients', value: '80+', unit: 'SATISFIED' },
-                { label: 'Hours', value: '10K+', unit: 'EDITED' },
+                { label: 'Projects', value: '150+', unit: 'COMPLETED', icon: Award },
+                { label: 'Experience', value: '5+', unit: 'YEARS', icon: Clock },
+                { label: 'Clients', value: '80+', unit: 'SATISFIED', icon: Award },
+                { label: 'Hours', value: '10K+', unit: 'EDITED', icon: Clock },
               ].map((stat, index) => (
                 <div
                   key={stat.label}
                   className="opacity-0 animate-fade-in-up"
                   style={{ animationDelay: `${0.8 + index * 0.1}s`, animationFillMode: 'forwards' }}
                 >
-                  <div className="hud-frame p-6 bg-black/50 backdrop-blur-sm text-center">
+                  <div className="hud-frame p-4 md:p-6 bg-black/50 backdrop-blur-sm text-center">
                     <div className="hud-content">
-                      <p className="text-4xl font-['Rajdhani'] font-bold text-[#FF4D00] mb-2">
+                      <stat.icon className="w-5 h-5 text-[#FF4D00]/50 mx-auto mb-2" strokeWidth={1.5} />
+                      <p className="text-3xl md:text-4xl font-['Rajdhani'] font-bold text-[#FF4D00] mb-1">
                         {stat.value}
                       </p>
-                      <p className="text-white font-['Rajdhani'] text-sm tracking-wide uppercase mb-1">
+                      <p className="text-white font-['Rajdhani'] text-xs md:text-sm tracking-wide uppercase mb-1">
                         {stat.label}
                       </p>
                       <p className="text-white/40 font-mono text-xs tracking-widest">
