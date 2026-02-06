@@ -11,8 +11,9 @@ function ProjectCard({ project, index }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <HUDFrame className="overflow-hidden bg-black/50 backdrop-blur-sm">
-        <div className="relative aspect-video overflow-hidden">
+      <div className="hud-frame overflow-hidden bg-black/50 backdrop-blur-sm">
+        <div className="hud-content">
+          <div className="relative aspect-video overflow-hidden">
           <img
             src={project.thumbnail}
             alt={project.title}
