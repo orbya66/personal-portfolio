@@ -53,55 +53,59 @@ export default function Skills() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           <div className="opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
-            <HUDFrame className="p-8 bg-black/50 backdrop-blur-sm h-full">
-              <div className="mb-6">
-                <h2 className="text-[#FF4D00] font-['Rajdhani'] text-2xl font-bold tracking-wide uppercase mb-2">
-                  Software Mastery
-                </h2>
-                <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent" />
+            <div className="hud-frame p-8 bg-black/50 backdrop-blur-sm h-full">
+              <div className="hud-content">
+                <div className="mb-6">
+                  <h2 className="text-[#FF4D00] font-['Rajdhani'] text-2xl font-bold tracking-wide uppercase mb-2">
+                    Software Mastery
+                  </h2>
+                  <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent" />
+                </div>
+                
+                <div className="space-y-6">
+                  {skills.slice(0, 4).map((skill, index) => (
+                    <div key={skill.name}>
+                      <SkillBar
+                        skill={skill.name}
+                        level={skill.level}
+                        index={index}
+                      />
+                      <p className="text-white/40 font-mono text-xs ml-1">
+                        {skill.module}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              
-              <div className="space-y-6">
-                {skills.slice(0, 4).map((skill, index) => (
-                  <div key={skill.name}>
-                    <SkillBar
-                      skill={skill.name}
-                      level={skill.level}
-                      index={index}
-                    />
-                    <p className="text-white/40 font-mono text-xs ml-1">
-                      {skill.module}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </HUDFrame>
+            </div>
           </div>
 
           <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-            <HUDFrame className="p-8 bg-black/50 backdrop-blur-sm h-full">
-              <div className="mb-6">
-                <h2 className="text-[#FF4D00] font-['Rajdhani'] text-2xl font-bold tracking-wide uppercase mb-2">
-                  Creative Systems
-                </h2>
-                <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent" />
+            <div className="hud-frame p-8 bg-black/50 backdrop-blur-sm h-full">
+              <div className="hud-content">
+                <div className="mb-6">
+                  <h2 className="text-[#FF4D00] font-['Rajdhani'] text-2xl font-bold tracking-wide uppercase mb-2">
+                    Creative Systems
+                  </h2>
+                  <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent" />
+                </div>
+                
+                <div className="space-y-6">
+                  {skills.slice(4).map((skill, index) => (
+                    <div key={skill.name}>
+                      <SkillBar
+                        skill={skill.name}
+                        level={skill.level}
+                        index={index + 4}
+                      />
+                      <p className="text-white/40 font-mono text-xs ml-1">
+                        {skill.module}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              
-              <div className="space-y-6">
-                {skills.slice(4).map((skill, index) => (
-                  <div key={skill.name}>
-                    <SkillBar
-                      skill={skill.name}
-                      level={skill.level}
-                      index={index + 4}
-                    />
-                    <p className="text-white/40 font-mono text-xs ml-1">
-                      {skill.module}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </HUDFrame>
+            </div>
           </div>
         </div>
 
