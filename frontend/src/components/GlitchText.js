@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
 
-export const GlitchText = ({ text, className = '', duration = 1000, delay = 0 }) => {
+function GlitchText({ text, className = '', duration = 1000, delay = 0 }) {
   const [displayText, setDisplayText] = useState(text);
   const [isAnimating, setIsAnimating] = useState(true);
 
@@ -48,4 +48,6 @@ export const GlitchText = ({ text, className = '', duration = 1000, delay = 0 })
       {displayText}
     </span>
   );
-};
+}
+
+export default GlitchText;
