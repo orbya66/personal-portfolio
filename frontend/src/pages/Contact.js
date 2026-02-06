@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import GlitchText from '../components/GlitchText';
-import { Mail, Linkedin, Instagram, Youtube, Send } from 'lucide-react';
+import { Mail, Linkedin, Instagram, Youtube, Send, Radio, Shield, Clock } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -42,13 +42,22 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen pt-16 grid-pattern">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="mb-16 text-center animate-fade-in-up">
-          <div className="mb-4">
+    <div className="min-h-screen pt-16 grid-pattern relative">
+      {/* Decorative corner brackets */}
+      <div className="fixed top-20 left-4 w-16 h-16 border-l-2 border-t-2 border-[#FF4D00]/20 pointer-events-none" />
+      <div className="fixed top-20 right-4 w-16 h-16 border-r-2 border-t-2 border-[#FF4D00]/20 pointer-events-none" />
+      <div className="fixed bottom-4 left-4 w-16 h-16 border-l-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
+      <div className="fixed bottom-4 right-4 w-16 h-16 border-r-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        {/* Header */}
+        <div className="mb-10 text-center animate-fade-in-up">
+          <div className="mb-4 flex items-center justify-center gap-4">
+            <div className="hidden sm:block w-12 h-[1px] bg-gradient-to-r from-transparent to-[#FF4D00]/50" />
             <span className="inline-block px-4 py-1 border border-[#FF4D00]/50 bg-black/50 backdrop-blur-sm text-[#FF4D00] font-mono text-xs tracking-widest">
               COMMS_CHANNEL: OPEN
             </span>
+            <div className="hidden sm:block w-12 h-[1px] bg-gradient-to-l from-transparent to-[#FF4D00]/50" />
           </div>
           <h1 className="font-['Rajdhani'] text-5xl md:text-7xl font-bold tracking-tighter uppercase text-white mb-4">
             <GlitchText text="COMMUNICATIONS" />
@@ -58,12 +67,12 @@ export default function Contact() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
-            <div className="hud-frame p-8 bg-black/50 backdrop-blur-sm">
+            <div className="hud-frame p-6 md:p-8 bg-black/50 backdrop-blur-sm">
               <div className="hud-content">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
                         NAME
@@ -122,7 +131,7 @@ export default function Contact() {
                       value={formData.message}
                       onChange={handleChange}
                       required
-                      rows={6}
+                      rows={5}
                       className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none resize-none transition-colors"
                       placeholder="Enter message..."
                       data-testid="contact-message-input"
@@ -163,13 +172,16 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="space-y-6 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-            <div className="hud-frame p-6 bg-black/50 backdrop-blur-sm">
+          <div className="space-y-4 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+            <div className="hud-frame p-5 bg-black/50 backdrop-blur-sm">
               <div className="hud-content">
-                <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
-                  Social Channels
-                </h3>
-                <div className="space-y-3">
+                <div className="flex items-center gap-3 mb-4">
+                  <Radio className="w-5 h-5 text-[#FF4D00]" strokeWidth={1.5} />
+                  <h3 className="text-[#FF4D00] font-['Rajdhani'] text-lg font-bold tracking-wide uppercase">
+                    Social Channels
+                  </h3>
+                </div>
+                <div className="space-y-2">
                   {socialLinks.map((link) => (
                     <a
                       key={link.label}
@@ -188,11 +200,14 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="hud-frame p-6 bg-black/50 backdrop-blur-sm">
+            <div className="hud-frame p-5 bg-black/50 backdrop-blur-sm">
               <div className="hud-content">
-                <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
-                  Response Protocol
-                </h3>
+                <div className="flex items-center gap-3 mb-4">
+                  <Clock className="w-5 h-5 text-[#FF4D00]" strokeWidth={1.5} />
+                  <h3 className="text-[#FF4D00] font-['Rajdhani'] text-lg font-bold tracking-wide uppercase">
+                    Response Protocol
+                  </h3>
+                </div>
                 <div className="space-y-3 text-sm">
                   <div className="flex items-start gap-2">
                     <div className="w-2 h-2 bg-[#FF4D00] mt-1.5 animate-pulse" />
@@ -219,11 +234,14 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="hud-frame p-6 bg-black/50 backdrop-blur-sm">
+            <div className="hud-frame p-5 bg-black/50 backdrop-blur-sm">
               <div className="hud-content">
-                <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
-                  Availability
-                </h3>
+                <div className="flex items-center gap-3 mb-4">
+                  <Shield className="w-5 h-5 text-[#FF4D00]" strokeWidth={1.5} />
+                  <h3 className="text-[#FF4D00] font-['Rajdhani'] text-lg font-bold tracking-wide uppercase">
+                    Availability
+                  </h3>
+                </div>
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-3 h-3 bg-[#00FF00] rounded-full animate-pulse" />
                   <span className="text-white font-mono text-sm">Currently Available</span>
