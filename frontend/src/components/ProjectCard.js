@@ -49,7 +49,7 @@ function ProjectCard({ project, index }) {
             </div>
           </div>
         </div>
-      </HUDFrame>
+      </div>
     </div>
   );
 }
