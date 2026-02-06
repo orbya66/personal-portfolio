@@ -36,6 +36,62 @@ body::before {
     z-index: 9999;
 }
 
+/* HUD Frame styles */
+.hud-frame {
+    position: relative;
+}
+
+.hud-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-top: 2px solid #FF4D00;
+    border-left: 2px solid #FF4D00;
+}
+
+.hud-frame::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    border-top: 2px solid #FF4D00;
+    border-right: 2px solid #FF4D00;
+}
+
+.hud-frame .hud-content::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-bottom: 2px solid #FF4D00;
+    border-left: 2px solid #FF4D00;
+    z-index: 1;
+}
+
+.hud-frame .hud-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    border-bottom: 2px solid #FF4D00;
+    border-right: 2px solid #FF4D00;
+    z-index: 1;
+}
+
+.hud-content {
+    position: relative;
+    z-index: 10;
+}
+
 @layer base {
     :root {
         --background: 0 0% 0%;
