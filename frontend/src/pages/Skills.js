@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { HUDFrame } from '../components/HUDFrame';
 import { GlitchText } from '../components/GlitchText';
 import { SkillBar } from '../components/SkillBar';
@@ -32,7 +31,6 @@ export default function Skills() {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading resume:', error);
-      // Fallback: open in new tab
       window.open(`${process.env.REACT_APP_BACKEND_URL}/api/resume/download`, '_blank');
     }
   };
@@ -40,13 +38,7 @@ export default function Skills() {
   return (
     <div className="min-h-screen pt-16 grid-pattern">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        {/* Header */}
-        <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <div className="mb-16 text-center animate-fade-in-up">
           <div className="mb-4">
             <span className="inline-block px-4 py-1 border border-[#FF4D00]/50 bg-black/50 backdrop-blur-sm text-[#FF4D00] font-mono text-xs tracking-widest">
               DIAGNOSTIC_MODE: ACTIVE
@@ -58,16 +50,10 @@ export default function Skills() {
           <p className="text-white/60 font-mono text-sm max-w-2xl mx-auto">
             Core competencies and system capabilities analysis
           </p>
-        </motion.div>
+        </div>
 
-        {/* Skills Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {/* Left Panel - Software Skills */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
             <HUDFrame className="p-8 bg-black/50 backdrop-blur-sm h-full">
               <div className="mb-6">
                 <h2 className="text-[#FF4D00] font-['Rajdhani'] text-2xl font-bold tracking-wide uppercase mb-2">
@@ -91,14 +77,9 @@ export default function Skills() {
                 ))}
               </div>
             </HUDFrame>
-          </motion.div>
+          </div>
 
-          {/* Right Panel - Creative Skills */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+          <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
             <HUDFrame className="p-8 bg-black/50 backdrop-blur-sm h-full">
               <div className="mb-6">
                 <h2 className="text-[#FF4D00] font-['Rajdhani'] text-2xl font-bold tracking-wide uppercase mb-2">
@@ -122,27 +103,20 @@ export default function Skills() {
                 ))}
               </div>
             </HUDFrame>
-          </motion.div>
+          </div>
         </div>
 
-        {/* System Stats */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
           {[
             { label: 'Projects', value: '150+', unit: 'COMPLETED' },
             { label: 'Experience', value: '5+', unit: 'YEARS' },
             { label: 'Clients', value: '80+', unit: 'SATISFIED' },
             { label: 'Hours', value: '10K+', unit: 'EDITED' },
           ].map((stat, index) => (
-            <motion.div
+            <div
               key={stat.label}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8 + index * 0.1 }}
+              className="opacity-0 animate-fade-in-up"
+              style={{ animationDelay: `${0.8 + index * 0.1}s`, animationFillMode: 'forwards' }}
             >
               <HUDFrame className="p-6 bg-black/50 backdrop-blur-sm text-center">
                 <p className="text-4xl font-['Rajdhani'] font-bold text-[#FF4D00] mb-2">
@@ -155,17 +129,11 @@ export default function Skills() {
                   {stat.unit}
                 </p>
               </HUDFrame>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Download Resume */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-        >
+        <div className="text-center opacity-0 animate-fade-in-up" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}>
           <button
             onClick={handleDownloadResume}
             className="group relative inline-flex items-center gap-3 px-8 py-4 bg-black/50 backdrop-blur-sm border-2 border-[#FF4D00] text-[#FF4D00] font-['Rajdhani'] font-bold text-lg tracking-wider uppercase hover:bg-[#FF4D00] hover:text-black transition-all duration-300"
@@ -174,7 +142,6 @@ export default function Skills() {
             <Download className="w-5 h-5" strokeWidth={2} />
             <span>Download Resume</span>
             
-            {/* Corner accents */}
             <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#FF4D00]" />
             <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#FF4D00]" />
             <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[#FF4D00]" />
@@ -184,7 +151,7 @@ export default function Skills() {
           <p className="mt-4 text-white/40 font-mono text-xs">
             PDF_FILE_SIZE: 2.4MB | LAST_UPDATE: 2025
           </p>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
