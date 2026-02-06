@@ -28,7 +28,7 @@ export default function Home() {
               <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
             </video>
           </div>
-        </HUDFrame>
+        </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="animate-fade-in-up">
@@ -49,15 +49,17 @@ export default function Home() {
             </div>
 
             <div className="max-w-2xl mx-auto mb-12 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
-              <HUDFrame className="p-8 bg-black/30 backdrop-blur-sm">
-                <p className="text-lg md:text-xl text-white/80 font-['Barlow'] leading-relaxed">
-                  CINEMATIC VIDEO EDITOR • MOTION DESIGNER • VISUAL STORYTELLER
-                </p>
-                <div className="mt-4 h-[1px] w-full bg-gradient-to-r from-transparent via-[#FF4D00]/50 to-transparent" />
-                <p className="mt-4 text-sm text-white/60 font-mono">
-                  Crafting high-impact visual experiences through precision editing and motion graphics
-                </p>
-              </HUDFrame>
+              <div className="hud-frame p-8 bg-black/30 backdrop-blur-sm">
+                <div className="hud-content">
+                  <p className="text-lg md:text-xl text-white/80 font-['Barlow'] leading-relaxed">
+                    CINEMATIC VIDEO EDITOR • MOTION DESIGNER • VISUAL STORYTELLER
+                  </p>
+                  <div className="mt-4 h-[1px] w-full bg-gradient-to-r from-transparent via-[#FF4D00]/50 to-transparent" />
+                  <p className="mt-4 text-sm text-white/60 font-mono">
+                    Crafting high-impact visual experiences through precision editing and motion graphics
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}>
