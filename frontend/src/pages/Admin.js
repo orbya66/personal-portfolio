@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Lock, Settings, Palette, FileText, BarChart3, MessageSquare, 
   Plus, Trash2, Edit2, Save, X, Eye, EyeOff, RefreshCw,
-  LogOut, User, Globe, Quote, Briefcase, Zap
+  LogOut, User, Globe, Quote, Briefcase, Zap, Upload, Image, Video, Copy, Check
 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -11,6 +11,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const tabs = [
   { id: 'projects', label: 'Projects', icon: Briefcase },
   { id: 'skills', label: 'Skills', icon: Zap },
+  { id: 'media', label: 'Media Library', icon: Image },
   { id: 'stats', label: 'Stats', icon: BarChart3 },
   { id: 'quotes', label: 'Quotes', icon: Quote },
   { id: 'config', label: 'Site Config', icon: Settings },
