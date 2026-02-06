@@ -1,13 +1,13 @@
-import React from 'react';
-
-export function HUDFrame({ children, className = '' }) {
+function HUDFrame({ children, className }) {
   return (
-    <div className={`relative ${className}`}>
-      <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#FF4D00]"></div>
-      <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#FF4D00]"></div>
-      <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#FF4D00]"></div>
-      <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#FF4D00]"></div>
-      <div className="relative z-10">{children}</div>
+    <div className={className || ''} style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '16px', height: '16px', borderTop: '2px solid #FF4D00', borderLeft: '2px solid #FF4D00' }}></div>
+      <div style={{ position: 'absolute', top: 0, right: 0, width: '16px', height: '16px', borderTop: '2px solid #FF4D00', borderRight: '2px solid #FF4D00' }}></div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, width: '16px', height: '16px', borderBottom: '2px solid #FF4D00', borderLeft: '2px solid #FF4D00' }}></div>
+      <div style={{ position: 'absolute', bottom: 0, right: 0, width: '16px', height: '16px', borderBottom: '2px solid #FF4D00', borderRight: '2px solid #FF4D00' }}></div>
+      <div style={{ position: 'relative', zIndex: 10 }}>{children}</div>
     </div>
   );
 }
+
+export default HUDFrame;
