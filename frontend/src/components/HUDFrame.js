@@ -1,5 +1,3 @@
-import './HUDStyles.css';
-
 function HUDFrame({ children, className }) {
   return (
     <div className={`hud-frame ${className || ''}`}>
