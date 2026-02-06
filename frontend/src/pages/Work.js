@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import HUDFrame from '../components/HUDFrame';
 import GlitchText from '../components/GlitchText';
 import ProjectCard from '../components/ProjectCard';
 
