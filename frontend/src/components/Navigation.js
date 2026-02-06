@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Activity } from 'lucide-react';
 
 function Navigation() {
   const location = useLocation();
@@ -17,9 +16,11 @@ function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="animate-spin-slow">
-              <Activity className="w-8 h-8 text-[#FF4D00]" strokeWidth={1.5} />
-            </div>
+            <img 
+              src="https://customer-assets.emergentagent.com/job_ironhud-portfolio/artifacts/dfpjzubn_image.webp"
+              alt="ORBYA Logo"
+              className="h-10 w-auto object-contain"
+            />
             <span className="text-white font-['Rajdhani'] font-bold text-xl tracking-wider">
               ORBYA
             </span>
