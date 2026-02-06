@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "Project Alpha",
+    "category": "Motion Graphics",
+    "description": "High-energy motion graphics piece showcasing brand evolution",
+    "thumbnail": "https://images.unsplash.com/photo-1706705556261-c02146118d58?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
+    "videoUrl": "https://www.w3schools.com/html/mov_bbb.mp4",
+    "featured": true,
+    "tags": ["motion design", "branding", "animation"],
+    "year": 2024
+  },
+  {
+    "id": 2,
+    "title": "Project Beta",
+    "category": "VFX Compositing",
+    "description": "Complex VFX work with advanced compositing techniques",
+    "thumbnail": "https://images.unsplash.com/photo-1663153204614-6dfc8feebbf9?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
+    "videoUrl": "https://www.w3schools.com/html/movie.mp4",
+    "featured": false,
+    "tags": ["vfx", "compositing", "special effects"],
+    "year": 2024
+  },
+  {
+    "id": 3,
+    "title": "Project Gamma",
+    "category": "Color Grading",
+    "description": "Cinematic color grading for short film",
+    "thumbnail": "https://images.unsplash.com/photo-1629981892096-76ee7793ba0b?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
+    "videoUrl": "https://www.w3schools.com/html/mov_bbb.mp4",
+    "featured": true,
+    "tags": ["color grading", "cinematic", "film"],
+    "year": 2023
+  },
+  {
+    "id": 4,
+    "title": "Project Delta",
+    "category": "Short Film",
+    "description": "Award-winning short film editing and post-production",
+    "thumbnail": "https://images.unsplash.com/photo-1706705556261-c02146118d58?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
+    "videoUrl": "https://www.w3schools.com/html/movie.mp4",
+    "featured": false,
+    "tags": ["short film", "editing", "storytelling"],
+    "year": 2023
+  },
+  {
+    "id": 5,
+    "title": "Project Epsilon",
+    "category": "Commercial",
+    "description": "High-end commercial production with dynamic editing",
+    "thumbnail": "https://images.unsplash.com/photo-1663153204614-6dfc8feebbf9?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
+    "videoUrl": "https://www.w3schools.com/html/mov_bbb.mp4",
+    "featured": true,
+    "tags": ["commercial", "advertising", "product"],
+    "year": 2024
+  },
+  {
+    "id": 6,
+    "title": "Project Zeta",
+    "category": "Music Video",
+    "description": "Creative music video with unique visual style",
+    "thumbnail": "https://images.unsplash.com/photo-1629981892096-76ee7793ba0b?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
+    "videoUrl": "https://www.w3schools.com/html/movie.mp4",
+    "featured": false,
+    "tags": ["music video", "creative", "visual effects"],
+    "year": 2023
+  }
+]
