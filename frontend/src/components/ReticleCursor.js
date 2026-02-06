@@ -43,7 +43,7 @@ function ReticleCursor() {
 
   return (
     <>
-      {/* Motion Trail - Now perfectly synced */}
+      {/* Motion Trail - Reduced glow */}
       {trail.map((point, index) => {
         const opacity = (index + 1) / trail.length;
         const scale = 0.4 + (index / trail.length) * 0.6;
@@ -56,22 +56,22 @@ function ReticleCursor() {
               left: `${point.x}px`,
               top: `${point.y}px`,
               transform: `translate(-50%, -50%) scale(${scale})`,
-              opacity: opacity * 0.4,
+              opacity: opacity * 0.25,
             }}
           >
-            {/* Triangular trail particles */}
-            <svg width="40" height="40" viewBox="0 0 40 40" className="blur-sm">
+            {/* Triangular trail particles - less blur */}
+            <svg width="40" height="40" viewBox="0 0 40 40" style={{ filter: 'blur(1px)' }}>
               <polygon 
                 points="20,8 32,28 8,28" 
                 fill="#FF4D00" 
-                opacity={opacity * 0.6}
+                opacity={opacity * 0.5}
               />
             </svg>
           </div>
         );
       })}
 
-      {/* Mark 3 Arc Reactor Cursor */}
+      {/* Mark 3 Arc Reactor Cursor - Reduced glow */}
       <div
         className="fixed pointer-events-none z-[10000]"
         style={{
@@ -81,11 +81,11 @@ function ReticleCursor() {
           transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        <svg width="50" height="50" viewBox="0 0 100 100" className="drop-shadow-[0_0_20px_rgba(255,77,0,0.8)]">
-          {/* Outer glow */}
+        <svg width="50" height="50" viewBox="0 0 100 100" style={{ filter: 'drop-shadow(0 0 8px rgba(255, 77, 0, 0.4))' }}>
+          {/* Reduced glow */}
           <defs>
             <filter id="glow">
-              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
               <feMerge>
                 <feMergeNode in="coloredBlur"/>
                 <feMergeNode in="SourceGraphic"/>
@@ -166,7 +166,7 @@ function ReticleCursor() {
         </svg>
       </div>
 
-      {/* Ambient glow - also synced */}
+      {/* Ambient glow - Significantly reduced */}
       <div
         className="fixed pointer-events-none z-[9999]"
         style={{
@@ -175,7 +175,7 @@ function ReticleCursor() {
           transform: 'translate(-50%, -50%)',
         }}
       >
-        <div className="w-[180px] h-[180px] rounded-full bg-[#FF4D00] opacity-8 blur-3xl" />
+        <div className="w-[120px] h-[120px] rounded-full bg-[#FF4D00] opacity-5 blur-2xl" />
       </div>
     </>
   );
