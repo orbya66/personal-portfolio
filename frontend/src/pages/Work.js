@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GlitchText from '../components/GlitchText';
 import ProjectCard from '../components/ProjectCard';
+import { Film, Archive, Layers, Grid3X3 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -8,6 +9,7 @@ export default function Work() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -29,14 +31,31 @@ export default function Work() {
     fetchProjects();
   }, []);
 
+  // Get unique categories
+  const categories = ['all', ...new Set(projects.map(p => p.category).filter(Boolean))];
+
+  // Filter projects
+  const filteredProjects = filter === 'all' 
+    ? projects 
+    : projects.filter(p => p.category === filter);
+
   return (
-    <div className="min-h-screen pt-16 grid-pattern">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="mb-16 text-center animate-fade-in-up">
-          <div className="mb-4">
+    <div className="min-h-screen pt-16 grid-pattern relative">
+      {/* Decorative corner brackets */}
+      <div className="fixed top-20 left-4 w-16 h-16 border-l-2 border-t-2 border-[#FF4D00]/20 pointer-events-none" />
+      <div className="fixed top-20 right-4 w-16 h-16 border-r-2 border-t-2 border-[#FF4D00]/20 pointer-events-none" />
+      <div className="fixed bottom-4 left-4 w-16 h-16 border-l-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
+      <div className="fixed bottom-4 right-4 w-16 h-16 border-r-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        {/* Header */}
+        <div className="mb-10 text-center animate-fade-in-up">
+          <div className="mb-4 flex items-center justify-center gap-4">
+            <div className="hidden sm:block w-12 h-[1px] bg-gradient-to-r from-transparent to-[#FF4D00]/50" />
             <span className="inline-block px-4 py-1 border border-[#FF4D00]/50 bg-black/50 backdrop-blur-sm text-[#FF4D00] font-mono text-xs tracking-widest">
               ARCHIVE_ACCESS: GRANTED
             </span>
+            <div className="hidden sm:block w-12 h-[1px] bg-gradient-to-l from-transparent to-[#FF4D00]/50" />
           </div>
           <h1 className="font-['Rajdhani'] text-5xl md:text-7xl font-bold tracking-tighter uppercase text-white mb-4">
             <GlitchText text="THE VAULT" />
@@ -45,6 +64,41 @@ export default function Work() {
             A curated collection of cinematic projects, visual effects, and motion design work
           </p>
         </div>
+
+        {/* Stats Bar */}
+        <div className="mb-8 flex flex-wrap justify-center gap-4 md:gap-8 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
+          <div className="flex items-center gap-2 px-4 py-2 bg-black/30 border border-[#FF4D00]/20">
+            <Film className="w-4 h-4 text-[#FF4D00]" strokeWidth={1.5} />
+            <span className="text-white/60 font-mono text-xs">{projects.length} PROJECTS</span>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-black/30 border border-[#FF4D00]/20">
+            <Archive className="w-4 h-4 text-[#FF4D00]" strokeWidth={1.5} />
+            <span className="text-white/60 font-mono text-xs">{categories.length - 1} CATEGORIES</span>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-black/30 border border-[#FF4D00]/20">
+            <Layers className="w-4 h-4 text-[#FF4D00]" strokeWidth={1.5} />
+            <span className="text-white/60 font-mono text-xs">2020-2025</span>
+          </div>
+        </div>
+
+        {/* Category Filter */}
+        {categories.length > 2 && (
+          <div className="mb-8 flex flex-wrap justify-center gap-2 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setFilter(cat)}
+                className={`px-4 py-2 font-mono text-xs tracking-wider uppercase transition-all duration-300 border ${
+                  filter === cat
+                    ? 'bg-[#FF4D00] text-black border-[#FF4D00]'
+                    : 'bg-black/30 text-white/60 border-[#FF4D00]/30 hover:border-[#FF4D00] hover:text-[#FF4D00]'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
 
         {loading ? (
           <div className="text-center py-20">
