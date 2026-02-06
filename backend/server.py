@@ -413,6 +413,36 @@ async def get_quote_of_the_day():
     return random.choice(quotes)
 
 
+# Stats endpoint for dynamic stats
+@api_router.get("/stats")
+async def get_stats():
+    """Get portfolio statistics from JSON file or return defaults"""
+    stats_file = ROOT_DIR / "data" / "stats.json"
+    
+    if stats_file.exists():
+        with open(stats_file, 'r') as f:
+            return json.load(f)
+    
+    # Default stats
+    return [
+        {"label": "Projects", "value": "150+", "unit": "COMPLETED"},
+        {"label": "Experience", "value": "5+", "unit": "YEARS"},
+        {"label": "Clients", "value": "80+", "unit": "SATISFIED"},
+        {"label": "Hours", "value": "10K+", "unit": "EDITED"}
+    ]
+
+
+@api_router.put("/stats")
+async def update_stats(stats: List[dict]):
+    """Update portfolio statistics"""
+    stats_file = ROOT_DIR / "data" / "stats.json"
+    
+    with open(stats_file, 'w') as f:
+        json.dump(stats, f, indent=2)
+    
+    return {"message": "Stats updated successfully", "stats": stats}
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
