@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
 
 export const SkillBar = ({ skill, level, index }) => {
   const [animatedLevel, setAnimatedLevel] = useState(0);

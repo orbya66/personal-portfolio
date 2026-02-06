@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { HUDFrame } from '../components/HUDFrame';
 import { GlitchText } from '../components/GlitchText';
