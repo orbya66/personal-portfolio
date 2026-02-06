@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GlitchText from '../components/GlitchText';
 import SkillBar from '../components/SkillBar';
-import { Download } from 'lucide-react';
+import { Download, Cpu, Sparkles, Award, Clock } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -54,13 +54,22 @@ export default function Skills() {
   };
 
   return (
-    <div className="min-h-screen pt-16 grid-pattern">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="mb-16 text-center animate-fade-in-up">
-          <div className="mb-4">
+    <div className="min-h-screen pt-16 grid-pattern relative">
+      {/* Decorative corner brackets */}
+      <div className="fixed top-20 left-4 w-16 h-16 border-l-2 border-t-2 border-[#FF4D00]/20 pointer-events-none" />
+      <div className="fixed top-20 right-4 w-16 h-16 border-r-2 border-t-2 border-[#FF4D00]/20 pointer-events-none" />
+      <div className="fixed bottom-4 left-4 w-16 h-16 border-l-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
+      <div className="fixed bottom-4 right-4 w-16 h-16 border-r-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        {/* Header */}
+        <div className="mb-10 text-center animate-fade-in-up">
+          <div className="mb-4 flex items-center justify-center gap-4">
+            <div className="hidden sm:block w-12 h-[1px] bg-gradient-to-r from-transparent to-[#FF4D00]/50" />
             <span className="inline-block px-4 py-1 border border-[#FF4D00]/50 bg-black/50 backdrop-blur-sm text-[#FF4D00] font-mono text-xs tracking-widest">
               DIAGNOSTIC_MODE: ACTIVE
             </span>
+            <div className="hidden sm:block w-12 h-[1px] bg-gradient-to-l from-transparent to-[#FF4D00]/50" />
           </div>
           <h1 className="font-['Rajdhani'] text-5xl md:text-7xl font-bold tracking-tighter uppercase text-white mb-4">
             <GlitchText text="TECHNICAL SPECS" />
