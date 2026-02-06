@@ -1,6 +1,6 @@
 import React from 'react';
-import GlitchText from '../components/GlitchText';
 import { Link } from 'react-router-dom';
+import GlitchText from '../components/GlitchText';
 import { ArrowRight, Video, Code, Mail } from 'lucide-react';
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
     <div className="min-h-screen pt-16 grid-pattern">
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="hud-frame absolute inset-0">
-          <div className="w-full h-full bg-gradient-to-b from-black/50 via-black/30 to-black flex items-center justify-center">
+          <div className="hud-content w-full h-full bg-gradient-to-b from-black/50 via-black/30 to-black flex items-center justify-center">
             <div className="absolute left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#FF4D00]/50 to-transparent animate-scan" />
             <video
               autoPlay
