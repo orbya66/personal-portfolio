@@ -279,6 +279,115 @@ async def sync_projects_to_db():
     return {"message": f"Synced {len(projects)} projects to database"}
 
 
+# Skills endpoints
+@api_router.get("/skills", response_model=List[Skill])
+async def get_skills():
+    """Get all skills from MongoDB or JSON file"""
+    # Try MongoDB first
+    skills = await db.skills.find({}, {"_id": 0}).to_list(1000)
+    
+    if not skills:
+        # Fallback to JSON file
+        skills_file = ROOT_DIR / "data" / "skills.json"
+        if skills_file.exists():
+            with open(skills_file, 'r') as f:
+                skills = json.load(f)
+    
+    return skills
+
+
+@api_router.get("/skills/{skill_id}", response_model=Skill)
+async def get_skill(skill_id: int):
+    """Get a specific skill by ID"""
+    skill = await db.skills.find_one({"id": skill_id}, {"_id": 0})
+    
+    if not skill:
+        # Try JSON file
+        skills_file = ROOT_DIR / "data" / "skills.json"
+        if skills_file.exists():
+            with open(skills_file, 'r') as f:
+                skills = json.load(f)
+                skill = next((s for s in skills if s["id"] == skill_id), None)
+    
+    if not skill:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    
+    return skill
+
+
+@api_router.post("/skills", response_model=Skill)
+async def create_skill(skill: SkillCreate):
+    """Add a new skill"""
+    # Get the highest ID
+    existing_skills = await db.skills.find({}, {"_id": 0, "id": 1}).to_list(1000)
+    
+    if not existing_skills:
+        # Check JSON file
+        skills_file = ROOT_DIR / "data" / "skills.json"
+        if skills_file.exists():
+            with open(skills_file, 'r') as f:
+                existing_skills = json.load(f)
+    
+    max_id = max([s.get("id", 0) for s in existing_skills]) if existing_skills else 0
+    new_id = max_id + 1
+    
+    skill_dict = skill.model_dump()
+    skill_obj = Skill(id=new_id, **skill_dict)
+    
+    doc = skill_obj.model_dump()
+    await db.skills.insert_one(doc)
+    
+    return skill_obj
+
+
+@api_router.put("/skills/{skill_id}", response_model=Skill)
+async def update_skill(skill_id: int, skill: SkillCreate):
+    """Update an existing skill"""
+    existing = await db.skills.find_one({"id": skill_id}, {"_id": 0})
+    
+    if not existing:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    
+    update_data = skill.model_dump()
+    update_data["id"] = skill_id
+    
+    await db.skills.replace_one({"id": skill_id}, update_data)
+    
+    return Skill(**update_data)
+
+
+@api_router.delete("/skills/{skill_id}")
+async def delete_skill(skill_id: int):
+    """Delete a skill"""
+    result = await db.skills.delete_one({"id": skill_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Skill not found")
+    
+    return {"message": "Skill deleted successfully", "id": skill_id}
+
+
+@api_router.post("/skills/sync")
+async def sync_skills_to_db():
+    """Sync skills from JSON file to MongoDB"""
+    skills_file = ROOT_DIR / "data" / "skills.json"
+    
+    if not skills_file.exists():
+        raise HTTPException(status_code=404, detail="Skills JSON file not found")
+    
+    with open(skills_file, 'r') as f:
+        skills = json.load(f)
+    
+    # Clear existing skills
+    await db.skills.delete_many({})
+    
+    # Insert all skills
+    if skills:
+        await db.skills.insert_many(skills)
+    
+    return {"message": f"Synced {len(skills)} skills to database"}
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
