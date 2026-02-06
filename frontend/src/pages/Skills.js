@@ -1,6 +1,6 @@
 import React from 'react';
 import HUDFrame from '../components/HUDFrame';
-import { GlitchText } from '../components/GlitchText';
+import GlitchText from '../components/GlitchText';
 import { SkillBar } from '../components/SkillBar';
 import { Download } from 'lucide-react';
 

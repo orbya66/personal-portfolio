@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HUDFrame from '../components/HUDFrame';
-import { GlitchText } from '../components/GlitchText';
+import GlitchText from '../components/GlitchText';
 import { Mail, Linkedin, Instagram, Youtube, Send } from 'lucide-react';
 import axios from 'axios';
 

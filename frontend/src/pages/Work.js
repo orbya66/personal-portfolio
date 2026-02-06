@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HUDFrame from '../components/HUDFrame';
-import { GlitchText } from '../components/GlitchText';
+import GlitchText from '../components/GlitchText';
 import { Play } from 'lucide-react';
 
 export default function Work() {
