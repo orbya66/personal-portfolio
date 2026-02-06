@@ -216,7 +216,6 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-              </div>
             </div>
 
             <div className="hud-frame p-6 bg-black/50 backdrop-blur-sm">
