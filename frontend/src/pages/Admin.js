@@ -1118,7 +1118,10 @@ function MessagesViewer() {
 
 // Main Admin Component
 export default function Admin() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Initialize state from sessionStorage
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem('adminAuth') === 'true';
+  });
   const [activeTab, setActiveTab] = useState('projects');
 
   const handleLogin = (password) => {
@@ -1130,13 +1133,6 @@ export default function Admin() {
     setIsAuthenticated(false);
     sessionStorage.removeItem('adminAuth');
   };
-
-  // Check session on mount
-  useEffect(() => {
-    if (sessionStorage.getItem('adminAuth') === 'true') {
-      setIsAuthenticated(true);
-    }
-  }, []);
 
   if (!isAuthenticated) {
     return <LoginForm onLogin={handleLogin} />;
