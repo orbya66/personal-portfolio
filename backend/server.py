@@ -388,6 +388,31 @@ async def sync_skills_to_db():
     return {"message": f"Synced {len(skills)} skills to database"}
 
 
+# Quote of the day endpoint
+@api_router.get("/quote")
+async def get_quote_of_the_day():
+    """Get a random quote from filmmaking/video editing"""
+    quotes_file = ROOT_DIR / "data" / "quotes.json"
+    
+    if not quotes_file.exists():
+        return {"quote": "Every frame tells a story.", "author": "Anonymous"}
+    
+    with open(quotes_file, 'r') as f:
+        quotes = json.load(f)
+    
+    if not quotes:
+        return {"quote": "Every frame tells a story.", "author": "Anonymous"}
+    
+    # Use date-based random for consistent quote per day
+    import random
+    from datetime import date
+    today = date.today()
+    seed = today.year * 10000 + today.month * 100 + today.day
+    random.seed(seed)
+    
+    return random.choice(quotes)
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
