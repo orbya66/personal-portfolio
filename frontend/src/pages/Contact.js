@@ -60,8 +60,9 @@ export default function Contact() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
-            <HUDFrame className="p-8 bg-black/50 backdrop-blur-sm">
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="hud-frame p-8 bg-black/50 backdrop-blur-sm">
+              <div className="hud-content">
+                <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
