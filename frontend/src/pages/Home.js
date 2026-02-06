@@ -1,6 +1,6 @@
 import React from 'react';
 import { GlitchText } from '../components/GlitchText';
-import { HUDFrame } from '../components/HUDFrame';
+import HUDFrame from '../components/HUDFrame';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Video, Code, Mail } from 'lucide-react';
 

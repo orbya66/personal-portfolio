@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HUDFrame } from '../components/HUDFrame';
+import HUDFrame from '../components/HUDFrame';
 import { GlitchText } from '../components/GlitchText';
 import { Play } from 'lucide-react';
 
