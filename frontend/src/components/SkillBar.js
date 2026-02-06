@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 
 export const SkillBar = ({ skill, level, index }) => {
   const [animatedLevel, setAnimatedLevel] = useState(0);
@@ -28,18 +27,15 @@ export const SkillBar = ({ skill, level, index }) => {
       
       <div className="flex gap-1">
         {[...Array(segments)].map((_, i) => (
-          <motion.div
+          <div
             key={i}
-            className={`h-2 flex-1 ${
+            className={`h-2 flex-1 transition-all duration-200 ${
               i < filledSegments
                 ? 'bg-[#FF4D00] shadow-[0_0_10px_rgba(255,77,0,0.5)]'
                 : 'bg-[#1A1A1A] border border-[#FF4D00]/20'
             }`}
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{
-              delay: index * 0.1 + i * 0.05,
-              duration: 0.2,
+            style={{
+              transitionDelay: `${index * 0.1 + i * 0.05}s`,
             }}
           />
         ))}
