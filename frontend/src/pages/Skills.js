@@ -1,19 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import GlitchText from '../components/GlitchText';
 import SkillBar from '../components/SkillBar';
 import { Download } from 'lucide-react';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
 export default function Skills() {
-  const skills = [
-    { name: 'After Effects', level: 95, module: 'AE_MODULE_V2.0' },
-    { name: 'Premiere Pro', level: 90, module: 'PR_MODULE_V1.8' },
-    { name: 'Photoshop', level: 85, module: 'PS_MODULE_V2.1' },
-    { name: 'DaVinci Resolve', level: 88, module: 'DR_MODULE_V1.9' },
-    { name: 'Motion Graphics', level: 92, module: 'MG_SYSTEM_V3.0' },
-    { name: 'Color Grading', level: 87, module: 'CG_SYSTEM_V2.5' },
-    { name: 'VFX Compositing', level: 90, module: 'VFX_SYSTEM_V2.8' },
-    { name: 'Sound Design', level: 75, module: 'SD_MODULE_V1.5' },
-  ];
+  const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/skills`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch skills');
+        }
+        const data = await response.json();
+        setSkills(data);
+      } catch (err) {
+        console.error('Error fetching skills:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSkills();
+  }, []);
+
+  // Split skills into software and creative categories
+  const softwareSkills = skills.filter(s => s.category === 'software');
+  const creativeSkills = skills.filter(s => s.category === 'creative');
 
   const handleDownloadResume = async () => {
     try {
