@@ -1,15 +1,15 @@
 # ORBYA Portfolio - Product Requirements Document
 
 ## Original Problem Statement
-Build a high-end, multi-page portfolio website for video editor/motion designer "Shrunit Shirke" (brand name: ORBYA) with an "Iron Man HUD" aesthetic.
+Build a high-end, multi-page portfolio website for video editor/motion designer "Shrunit Shirke" (brand name: ORBYA) with an "Iron Man HUD" aesthetic. **Everything should be customizable and dynamic, including colors.**
 
 ## Core Requirements
-- **Visual Theme:** Pure black background (#000000), glowing orange (#FF4D00) accents, minimalist, cinematic, industrial style
-- **Pages:** Home, Work (The Vault), Skills (Technical Specs), Contact (Comms)
-- **Content:** Dynamic projects, skills, quotes fetched from backend JSON files
+- **Visual Theme:** Pure black background, glowing orange accents (fully customizable via admin panel)
+- **Pages:** Home, Work (The Vault), Skills (Technical Specs), Contact (Comms), Admin Panel
+- **Content:** Dynamic projects, skills, quotes fetched from backend
 - **Custom Cursor:** Arc reactor-inspired cursor with smooth motion trail
 - **Animations:** HUD-style entrance animations, hover effects
-- **Fully Customizable:** Everything editable via JSON files or API - no code changes needed
+- **Fully Customizable:** Everything editable via Admin Panel - no code changes needed
 
 ## User Personas
 - Primary: Potential clients (film studios, content creators) looking to hire a video editor
@@ -20,10 +20,11 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 /app/
 ├── backend/ (FastAPI)
 │   ├── data/
-│   │   ├── projects.json       # Dynamic project data (supports multiple aspect ratios)
-│   │   ├── skills.json         # Dynamic skills data (auto-groups by category)
+│   │   ├── projects.json       # Dynamic project data
+│   │   ├── skills.json         # Dynamic skills data
 │   │   ├── quotes.json         # Quote of the day pool
-│   │   ├── stats.json          # Portfolio statistics (customizable)
+│   │   ├── stats.json          # Portfolio statistics
+│   │   ├── config.json         # Site configuration & colors
 │   │   └── CUSTOMIZATION_GUIDE.md
 │   ├── static/
 │   │   └── ORBYA_Resume.pdf
@@ -32,35 +33,65 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
     ├── components/
     │   ├── ReticleCursor.js    # Custom cursor
     │   ├── GlitchText.js       # Text animation
-    │   ├── ProjectCard.js      # Project display (supports multiple aspect ratios)
-    │   └── SkillBar.js         # Skill progress bar
+    │   ├── ProjectCard.js      # Project display (multi-aspect ratio)
+    │   ├── SkillBar.js         # Skill progress bar
+    │   └── Navigation.js
     └── pages/
         ├── Home.js             # HUD data displays, rotating rings
-        ├── Work.js             # Video modal, category filters, view modes
-        ├── Skills.js           # Auto-grouping categories, dynamic stats
-        └── Contact.js
+        ├── Work.js             # Video modal, category filters
+        ├── Skills.js           # Auto-grouping categories
+        ├── Contact.js          # Contact form
+        └── Admin.js            # Full admin panel
 ```
 
 ## API Endpoints
+### Projects
 - `GET /api/projects` - Fetch all projects
 - `POST /api/projects` - Add new project
 - `PUT /api/projects/{id}` - Update project
 - `DELETE /api/projects/{id}` - Delete project
 - `POST /api/projects/sync` - Sync JSON to MongoDB
+
+### Skills
 - `GET /api/skills` - Fetch all skills
 - `POST /api/skills` - Add new skill
 - `PUT /api/skills/{id}` - Update skill
 - `DELETE /api/skills/{id}` - Delete skill
 - `POST /api/skills/sync` - Sync JSON to MongoDB
+
+### Configuration
+- `GET /api/config` - Get site configuration
+- `PUT /api/config` - Update site configuration
 - `GET /api/stats` - Get portfolio stats
 - `PUT /api/stats` - Update portfolio stats
+- `GET /api/quotes` - Get all quotes
+- `PUT /api/quotes` - Update quotes
+- `POST /api/admin/auth` - Admin authentication
+- `PUT /api/admin/password` - Change admin password
+
+### Other
 - `GET /api/quote` - Random quote
 - `POST /api/contact` - Contact form submission
+- `GET /api/contact` - List contact messages
 - `GET /api/resume/download` - Download resume
 
 ## What's Been Implemented (Dec 2025)
 
 ### ✅ Completed Features
+
+**Admin Panel (NEW - /admin):**
+- Password-protected access (default: orbya2024)
+- **Projects Manager:** Add, edit, delete projects with thumbnails
+- **Skills Manager:** Add, edit, delete skills with level slider
+- **Stats Manager:** Customize portfolio statistics
+- **Quotes Manager:** Add, edit, delete daily quotes
+- **Site Config:** Edit site name, tagline, social links, HUD info
+- **Color Theme Editor:**
+  - 8 preset themes (Iron Man, Cyberpunk, Matrix, Purple Haze, Gold Rush, Ocean Blue, Hot Pink, Emerald)
+  - Custom color pickers for all colors
+  - Live preview
+  - Real-time color application via CSS variables
+- **Messages Viewer:** View all contact form submissions
 
 **Home Page:**
 - Live system time display (SYS_TIME)
@@ -71,17 +102,16 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 - Quote of the day
 
 **Work Page (The Vault):**
-- Dynamic category filters (auto-detected from projects)
+- Dynamic category filters (auto-detected)
 - Stats bar (project count, categories, year range)
 - Masonry layout for mixed aspect ratios
 - Grid view option
-- Video modal player (supports YouTube, Vimeo, direct URLs)
-- Featured/year badges
-- Tags display
+- Video modal player (YouTube/Vimeo/direct URLs)
+- Featured/year badges, tags display
 
 **Skills Page (Technical Specs):**
 - Auto-grouping by category
-- Dynamic column layout (1-3 columns based on categories)
+- Dynamic column layout (1-3 columns)
 - Skill count per category
 - Customizable stats section
 - Resume download
@@ -97,10 +127,11 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 - Decorative corner brackets on all pages
 - HUD-style animations
 - Responsive design
+- Dynamic color theming via CSS variables
 - Full CRUD API for all content
 
 ### ⚠️ Mocked/Simplified
-- Contact form logs to console (no email integration)
+- Contact form stores messages but doesn't send emails
 
 ## Dynamic Content System
 
@@ -117,6 +148,16 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 - `tools` → Wrench icon
 - `design` → Palette icon
 - `development` → Code icon
+
+### Color Presets Available
+1. Iron Man (Orange/Black) - Default
+2. Cyberpunk (Cyan/Dark)
+3. Matrix (Green/Black)
+4. Purple Haze (Purple/Dark)
+5. Gold Rush (Gold/Dark)
+6. Ocean Blue (Blue/Dark Blue)
+7. Hot Pink (Pink/Dark)
+8. Emerald (Green/Dark Green)
 
 ## Backlog
 
@@ -138,10 +179,15 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 - `framer-motion` was removed due to Babel compilation errors
 - Animations implemented with CSS keyframes and JavaScript
 - Data stored in MongoDB (with JSON file fallback)
-- All content customizable via `/app/backend/data/*.json`
+- Colors are applied via CSS custom properties (variables)
+- Admin panel uses session storage for auth state
 
 ## Preview URL
 https://hudstyled-folio.preview.emergentagent.com
 
-## Customization
-See `/app/backend/data/CUSTOMIZATION_GUIDE.md` for complete documentation on adding/editing content.
+## Admin Panel Access
+- URL: https://hudstyled-folio.preview.emergentagent.com/admin
+- Default Password: `orbya2024`
+
+## Customization Guide
+See `/app/backend/data/CUSTOMIZATION_GUIDE.md` for complete documentation on adding/editing content via JSON files or API.
