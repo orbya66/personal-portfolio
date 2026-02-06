@@ -4,28 +4,22 @@ function ReticleCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [trail, setTrail] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
-  const timeoutRef = useRef(null);
+  const animationFrameRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       const newPosition = { x: e.clientX, y: e.clientY };
       setMousePosition(newPosition);
       
-      // Add to trail - longer and more visible
+      // Add to trail with timestamp
       setTrail(prevTrail => {
-        const newTrail = [...prevTrail, { ...newPosition, id: Date.now() + Math.random() }];
-        return newTrail.slice(-25); // Keep last 25 points for longer trail
+        const newTrail = [...prevTrail, { 
+          ...newPosition, 
+          id: Date.now() + Math.random(),
+          timestamp: Date.now()
+        }];
+        return newTrail.slice(-25); // Keep last 25 points
       });
-
-      // Clear existing timeout
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-
-      // Set new timeout to fade trail when mouse stops
-      timeoutRef.current = setTimeout(() => {
-        setTrail([]);
-      }, 150);
     };
 
     const handleMouseOver = (e) => {
@@ -43,23 +37,44 @@ function ReticleCursor() {
       }
     };
 
+    // Smooth fade-out animation
+    const fadeTrail = () => {
+      setTrail(prevTrail => {
+        const now = Date.now();
+        // Remove points older than 800ms (smooth fade duration)
+        return prevTrail.filter(point => now - point.timestamp < 800);
+      });
+      animationFrameRef.current = requestAnimationFrame(fadeTrail);
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseover', handleMouseOver);
+    animationFrameRef.current = requestAnimationFrame(fadeTrail);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseover', handleMouseOver);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
       }
     };
   }, []);
 
   return (
     <>
-      {/* Motion Trail - More visible and longer */}
+      {/* Motion Trail - Smooth fade based on age */}
       {trail.map((point, index) => {
-        const opacity = (index + 1) / trail.length;
+        const age = Date.now() - point.timestamp;
+        const maxAge = 800; // 800ms total lifetime
+        const ageProgress = Math.min(age / maxAge, 1);
+        
+        // Base opacity from position in trail
+        const positionOpacity = (index + 1) / trail.length;
+        // Age-based opacity (fades over time)
+        const ageOpacity = 1 - ageProgress;
+        // Combined opacity
+        const opacity = positionOpacity * ageOpacity * 0.6;
+        
         const scale = 0.3 + (index / trail.length) * 0.7;
         
         return (
@@ -70,10 +85,11 @@ function ReticleCursor() {
               left: `${point.x}px`,
               top: `${point.y}px`,
               transform: `translate(-50%, -50%) scale(${scale})`,
-              opacity: opacity * 0.6,
+              opacity: opacity,
+              transition: 'opacity 0.1s ease-out',
             }}
           >
-            {/* Circular trail particles - more visible */}
+            {/* Circular trail particles */}
             <div 
               className="w-3 h-3 rounded-full bg-[#FF4D00]" 
               style={{ 
