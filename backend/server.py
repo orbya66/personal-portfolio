@@ -81,6 +81,24 @@ class ProjectCreate(BaseModel):
     year: Optional[int] = None
 
 
+class Skill(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: int
+    name: str
+    level: int
+    module: Optional[str] = ""
+    category: str
+    icon: Optional[str] = ""
+
+class SkillCreate(BaseModel):
+    name: str
+    level: int
+    module: Optional[str] = ""
+    category: str
+    icon: Optional[str] = ""
+
+
 # Existing routes
 @api_router.get("/")
 async def root():
