@@ -7,9 +7,10 @@ import os
 import logging
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
-from typing import List
+from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
+import json
 
 
 ROOT_DIR = Path(__file__).parent
@@ -54,6 +55,30 @@ class ContactMessageCreate(BaseModel):
     email: EmailStr
     subject: str
     message: str
+
+
+class Project(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: int
+    title: str
+    category: str
+    description: Optional[str] = ""
+    thumbnail: str
+    videoUrl: str
+    featured: Optional[bool] = False
+    tags: Optional[List[str]] = []
+    year: Optional[int] = None
+
+class ProjectCreate(BaseModel):
+    title: str
+    category: str
+    description: Optional[str] = ""
+    thumbnail: str
+    videoUrl: str
+    featured: Optional[bool] = False
+    tags: Optional[List[str]] = []
+    year: Optional[int] = None
 
 
 # Existing routes
