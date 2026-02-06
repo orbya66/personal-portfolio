@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div className="min-h-screen pt-16 grid-pattern">
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <HUDFrame className="absolute inset-0">
+        <div className="hud-frame absolute inset-0">
           <div className="w-full h-full bg-gradient-to-b from-black/50 via-black/30 to-black flex items-center justify-center">
             <div className="absolute left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#FF4D00]/50 to-transparent animate-scan" />
             <video
