@@ -1,14 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import GlitchText from '../components/GlitchText';
 import SkillBar from '../components/SkillBar';
-import { Download, Cpu, Sparkles, Award, Clock } from 'lucide-react';
+import { Download, Cpu, Sparkles, Award, Clock, Wrench, Palette, Zap, Code } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+// Map category names to icons
+const categoryIcons = {
+  software: Cpu,
+  creative: Sparkles,
+  tools: Wrench,
+  design: Palette,
+  development: Code,
+  default: Zap
+};
+
+// Map category names to display titles
+const categoryTitles = {
+  software: 'Software Mastery',
+  creative: 'Creative Systems',
+  tools: 'Tools & Equipment',
+  design: 'Design Suite',
+  development: 'Development Stack',
+  default: 'Other Skills'
+};
 
 export default function Skills() {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [stats, setStats] = useState([]);
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -27,16 +48,45 @@ export default function Skills() {
       }
     };
 
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/stats`);
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data);
+        }
+      } catch (err) {
+        // Stats are optional, use defaults if not available
+        console.log('Stats not available, using defaults');
+      }
+    };
+
     fetchSkills();
+    fetchStats();
   }, []);
 
-  // Split skills into software and creative categories
-  const softwareSkills = skills.filter(s => s.category === 'software');
-  const creativeSkills = skills.filter(s => s.category === 'creative');
+  // Dynamically group skills by category
+  const groupedSkills = skills.reduce((acc, skill) => {
+    const category = skill.category || 'default';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(skill);
+    return acc;
+  }, {});
+
+  // Get categories and determine grid layout
+  const categories = Object.keys(groupedSkills);
+  const gridCols = categories.length === 1 
+    ? 'lg:grid-cols-1 max-w-2xl' 
+    : categories.length === 2 
+    ? 'lg:grid-cols-2' 
+    : categories.length === 3 
+    ? 'lg:grid-cols-3' 
+    : 'lg:grid-cols-2';
 
   const handleDownloadResume = async () => {
     try {
-      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${BACKEND_URL}/api/resume/download`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -49,9 +99,19 @@ export default function Skills() {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading resume:', error);
-      window.open(`${process.env.REACT_APP_BACKEND_URL}/api/resume/download`, '_blank');
+      window.open(`${BACKEND_URL}/api/resume/download`, '_blank');
     }
   };
+
+  // Default stats if not loaded from API
+  const defaultStats = [
+    { label: 'Projects', value: '150+', unit: 'COMPLETED', icon: Award },
+    { label: 'Experience', value: '5+', unit: 'YEARS', icon: Clock },
+    { label: 'Clients', value: '80+', unit: 'SATISFIED', icon: Award },
+    { label: 'Hours', value: '10K+', unit: 'EDITED', icon: Clock },
+  ];
+
+  const displayStats = stats.length > 0 ? stats : defaultStats;
 
   return (
     <div className="min-h-screen pt-16 grid-pattern relative">
@@ -61,7 +121,7 @@ export default function Skills() {
       <div className="fixed bottom-4 left-4 w-16 h-16 border-l-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
       <div className="fixed bottom-4 right-4 w-16 h-16 border-r-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         {/* Header */}
         <div className="mb-10 text-center animate-fade-in-up">
           <div className="mb-4 flex items-center justify-center gap-4">
@@ -75,7 +135,7 @@ export default function Skills() {
             <GlitchText text="TECHNICAL SPECS" />
           </h1>
           <p className="text-white/60 font-mono text-sm max-w-2xl mx-auto">
-            Core competencies and system capabilities analysis
+            Core competencies and system capabilities analysis • {skills.length} skills loaded
           </p>
         </div>
 
@@ -93,106 +153,92 @@ export default function Skills() {
           <div className="text-center py-16">
             <Cpu className="w-16 h-16 text-[#FF4D00]/30 mx-auto mb-4" strokeWidth={1} />
             <p className="text-[#FF4D00] font-mono text-sm">NO SKILLS FOUND</p>
-            <p className="text-white/40 font-mono text-xs mt-2">Add skills to /app/backend/data/skills.json</p>
+            <p className="text-white/40 font-mono text-xs mt-2">Add skills via API: POST /api/skills</p>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-              <div className="opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
-                <div className="hud-frame p-6 md:p-8 bg-black/50 backdrop-blur-sm h-full">
-                  <div className="hud-content">
-                    <div className="mb-6 flex items-center gap-3">
-                      <Cpu className="w-6 h-6 text-[#FF4D00]" strokeWidth={1.5} />
-                      <div>
-                        <h2 className="text-[#FF4D00] font-['Rajdhani'] text-xl md:text-2xl font-bold tracking-wide uppercase">
-                          Software Mastery
-                        </h2>
-                        <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent mt-1" />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-5">
-                      {softwareSkills.map((skill, index) => (
-                        <div key={skill.id}>
-                          <SkillBar
-                            skill={skill.name}
-                            level={skill.level}
-                            index={index}
-                          />
-                          <p className="text-white/40 font-mono text-xs ml-1">
-                            {skill.module}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* Dynamic Skills Grid - Auto-aligns based on number of categories */}
+            <div className={`grid grid-cols-1 ${gridCols} gap-6 mb-10 mx-auto`}>
+              {categories.map((category, catIndex) => {
+                const IconComponent = categoryIcons[category] || categoryIcons.default;
+                const title = categoryTitles[category] || category.charAt(0).toUpperCase() + category.slice(1);
+                const categorySkills = groupedSkills[category];
 
-              <div className="opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-                <div className="hud-frame p-6 md:p-8 bg-black/50 backdrop-blur-sm h-full">
-                  <div className="hud-content">
-                    <div className="mb-6 flex items-center gap-3">
-                      <Sparkles className="w-6 h-6 text-[#FF4D00]" strokeWidth={1.5} />
-                      <div>
-                        <h2 className="text-[#FF4D00] font-['Rajdhani'] text-xl md:text-2xl font-bold tracking-wide uppercase">
-                          Creative Systems
-                        </h2>
-                        <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent mt-1" />
+                return (
+                  <div 
+                    key={category}
+                    className="opacity-0 animate-fade-in-up" 
+                    style={{ animationDelay: `${catIndex * 0.2}s`, animationFillMode: 'forwards' }}
+                  >
+                    <div className="hud-frame p-6 md:p-8 bg-black/50 backdrop-blur-sm h-full">
+                      <div className="hud-content">
+                        <div className="mb-6 flex items-center gap-3">
+                          <IconComponent className="w-6 h-6 text-[#FF4D00]" strokeWidth={1.5} />
+                          <div className="flex-1">
+                            <h2 className="text-[#FF4D00] font-['Rajdhani'] text-xl md:text-2xl font-bold tracking-wide uppercase">
+                              {title}
+                            </h2>
+                            <div className="h-[1px] w-full bg-gradient-to-r from-[#FF4D00] to-transparent mt-1" />
+                          </div>
+                          <span className="text-white/30 font-mono text-xs">{categorySkills.length}</span>
+                        </div>
+                        
+                        <div className="space-y-5">
+                          {categorySkills.map((skill, index) => (
+                            <div key={skill.id}>
+                              <SkillBar
+                                skill={skill.name}
+                                level={skill.level}
+                                index={index}
+                              />
+                              <p className="text-white/40 font-mono text-xs ml-1 mt-1">
+                                {skill.module}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                    
-                    <div className="space-y-5">
-                      {creativeSkills.map((skill, index) => (
-                        <div key={skill.id}>
-                          <SkillBar
-                            skill={skill.name}
-                            level={skill.level}
-                            index={index + softwareSkills.length}
-                          />
-                          <p className="text-white/40 font-mono text-xs ml-1">
-                            {skill.module}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
                   </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-10 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
-              {[
-                { label: 'Projects', value: '150+', unit: 'COMPLETED', icon: Award },
-                { label: 'Experience', value: '5+', unit: 'YEARS', icon: Clock },
-                { label: 'Clients', value: '80+', unit: 'SATISFIED', icon: Award },
-                { label: 'Hours', value: '10K+', unit: 'EDITED', icon: Clock },
-              ].map((stat, index) => (
-                <div
-                  key={stat.label}
-                  className="opacity-0 animate-fade-in-up"
-                  style={{ animationDelay: `${0.8 + index * 0.1}s`, animationFillMode: 'forwards' }}
-                >
-                  <div className="hud-frame p-4 md:p-6 bg-black/50 backdrop-blur-sm text-center">
-                    <div className="hud-content">
-                      <stat.icon className="w-5 h-5 text-[#FF4D00]/50 mx-auto mb-2" strokeWidth={1.5} />
-                      <p className="text-3xl md:text-4xl font-['Rajdhani'] font-bold text-[#FF4D00] mb-1">
-                        {stat.value}
-                      </p>
-                      <p className="text-white font-['Rajdhani'] text-xs md:text-sm tracking-wide uppercase mb-1">
-                        {stat.label}
-                      </p>
-                      <p className="text-white/40 font-mono text-xs tracking-widest">
-                        {stat.unit}
-                      </p>
+            {/* Stats Grid - Auto-adjusts based on number of stats */}
+            <div 
+              className={`grid grid-cols-2 ${displayStats.length <= 4 ? 'md:grid-cols-4' : 'md:grid-cols-' + Math.min(displayStats.length, 6)} gap-3 md:gap-4 mb-10 opacity-0 animate-fade-in-up`} 
+              style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}
+            >
+              {displayStats.map((stat, index) => {
+                const StatIcon = stat.icon || Award;
+                return (
+                  <div
+                    key={stat.label}
+                    className="opacity-0 animate-fade-in-up"
+                    style={{ animationDelay: `${0.8 + index * 0.1}s`, animationFillMode: 'forwards' }}
+                  >
+                    <div className="hud-frame p-4 md:p-6 bg-black/50 backdrop-blur-sm text-center">
+                      <div className="hud-content">
+                        <StatIcon className="w-5 h-5 text-[#FF4D00]/50 mx-auto mb-2" strokeWidth={1.5} />
+                        <p className="text-3xl md:text-4xl font-['Rajdhani'] font-bold text-[#FF4D00] mb-1">
+                          {stat.value}
+                        </p>
+                        <p className="text-white font-['Rajdhani'] text-xs md:text-sm tracking-wide uppercase mb-1">
+                          {stat.label}
+                        </p>
+                        <p className="text-white/40 font-mono text-xs tracking-widest">
+                          {stat.unit}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </>
         )}
 
+        {/* Download Resume */}
         <div className="text-center opacity-0 animate-fade-in-up" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}>
           <button
             onClick={handleDownloadResume}
@@ -211,6 +257,20 @@ export default function Skills() {
           <p className="mt-4 text-white/40 font-mono text-xs">
             PDF_FILE_SIZE: 2.4MB | LAST_UPDATE: 2025
           </p>
+        </div>
+
+        {/* Info Box */}
+        <div className="mt-10 text-center opacity-0 animate-fade-in-up" style={{ animationDelay: '1.4s', animationFillMode: 'forwards' }}>
+          <div className="hud-frame inline-block p-4 md:p-6 bg-black/30 backdrop-blur-sm">
+            <div className="hud-content">
+              <p className="text-[#FF4D00] font-mono text-xs md:text-sm tracking-wider">
+                // ADD SKILLS VIA API: POST /api/skills
+              </p>
+              <p className="text-white/40 font-mono text-xs mt-2">
+                Categories: software, creative, tools, design, development (auto-detected)
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
