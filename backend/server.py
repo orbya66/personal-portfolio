@@ -541,6 +541,115 @@ async def change_admin_password(data: dict):
     return {"success": True, "message": "Password changed successfully"}
 
 
+# File Upload endpoints
+ALLOWED_IMAGE_TYPES = {'image/jpeg', 'image/png', 'image/gif', 'image/webp'}
+ALLOWED_VIDEO_TYPES = {'video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo'}
+MAX_FILE_SIZE = 100 * 1024 * 1024  # 100MB
+
+
+@api_router.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    """Upload a file (image or video)"""
+    # Check file type
+    content_type = file.content_type
+    is_image = content_type in ALLOWED_IMAGE_TYPES
+    is_video = content_type in ALLOWED_VIDEO_TYPES
+    
+    if not is_image and not is_video:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"File type not allowed. Allowed: images (jpeg, png, gif, webp) and videos (mp4, webm, mov, avi)"
+        )
+    
+    # Generate unique filename
+    file_ext = file.filename.split('.')[-1] if '.' in file.filename else 'bin'
+    unique_filename = f"{uuid.uuid4().hex}.{file_ext}"
+    
+    # Determine subfolder
+    subfolder = "images" if is_image else "videos"
+    upload_path = UPLOADS_DIR / subfolder
+    upload_path.mkdir(exist_ok=True)
+    
+    file_path = upload_path / unique_filename
+    
+    # Save file
+    try:
+        with open(file_path, 'wb') as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
+    
+    # Get file info
+    file_size = os.path.getsize(file_path)
+    
+    # Build URL - use the base URL from environment or relative path
+    relative_url = f"/static/uploads/{subfolder}/{unique_filename}"
+    
+    return {
+        "success": True,
+        "filename": unique_filename,
+        "original_name": file.filename,
+        "type": "image" if is_image else "video",
+        "content_type": content_type,
+        "size": file_size,
+        "url": relative_url
+    }
+
+
+@api_router.get("/media")
+async def list_media():
+    """List all uploaded media files"""
+    media = {"images": [], "videos": []}
+    
+    # List images
+    images_dir = UPLOADS_DIR / "images"
+    if images_dir.exists():
+        for file in images_dir.iterdir():
+            if file.is_file():
+                media["images"].append({
+                    "filename": file.name,
+                    "url": f"/static/uploads/images/{file.name}",
+                    "size": os.path.getsize(file),
+                    "modified": datetime.fromtimestamp(os.path.getmtime(file)).isoformat()
+                })
+    
+    # List videos
+    videos_dir = UPLOADS_DIR / "videos"
+    if videos_dir.exists():
+        for file in videos_dir.iterdir():
+            if file.is_file():
+                media["videos"].append({
+                    "filename": file.name,
+                    "url": f"/static/uploads/videos/{file.name}",
+                    "size": os.path.getsize(file),
+                    "modified": datetime.fromtimestamp(os.path.getmtime(file)).isoformat()
+                })
+    
+    # Sort by modified date (newest first)
+    media["images"].sort(key=lambda x: x["modified"], reverse=True)
+    media["videos"].sort(key=lambda x: x["modified"], reverse=True)
+    
+    return media
+
+
+@api_router.delete("/media/{media_type}/{filename}")
+async def delete_media(media_type: str, filename: str):
+    """Delete a media file"""
+    if media_type not in ["images", "videos"]:
+        raise HTTPException(status_code=400, detail="Invalid media type")
+    
+    file_path = UPLOADS_DIR / media_type / filename
+    
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="File not found")
+    
+    try:
+        os.remove(file_path)
+        return {"success": True, "message": "File deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete file: {str(e)}")
+
+
 # Quotes endpoints
 @api_router.get("/quotes")
 async def get_all_quotes():
