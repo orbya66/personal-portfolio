@@ -216,20 +216,23 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-            </HUDFrame>
-
-            <HUDFrame className="p-6 bg-black/50 backdrop-blur-sm">
-              <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
-                Availability
-              </h3>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-3 h-3 bg-[#00FF00] rounded-full animate-pulse" />
-                <span className="text-white font-mono text-sm">Currently Available</span>
               </div>
-              <p className="text-white/50 font-mono text-xs">
-                Open to new projects and collaborations
-              </p>
-            </HUDFrame>
+            </div>
+
+            <div className="hud-frame p-6 bg-black/50 backdrop-blur-sm">
+              <div className="hud-content">
+                <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
+                  Availability
+                </h3>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-3 h-3 bg-[#00FF00] rounded-full animate-pulse" />
+                  <span className="text-white font-mono text-sm">Currently Available</span>
+                </div>
+                <p className="text-white/50 font-mono text-xs">
+                  Open to new projects and collaborations
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
