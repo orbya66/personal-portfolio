@@ -159,6 +159,7 @@ export default function Contact() {
                   <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#FF4D00]" />
                 </button>
               </form>
+              </div>
             </div>
           </div>
 
