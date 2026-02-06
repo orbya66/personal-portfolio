@@ -1,0 +1,43 @@
+{
+  "total_tests": 6,
+  "passed_tests": 6,
+  "success_rate": 100.0,
+  "results": [
+    {
+      "test": "API Root Endpoint",
+      "success": true,
+      "details": "Status: 200, Message: ORBYA Portfolio API - System Online",
+      "timestamp": "2026-02-06T18:24:40.132370"
+    },
+    {
+      "test": "Contact Form Submission",
+      "success": true,
+      "details": "Status: 200, Contact ID: fd57f77a-d44d-4670-b1a5-9867c80617b0",
+      "timestamp": "2026-02-06T18:24:40.211572"
+    },
+    {
+      "test": "Contact Form Validation",
+      "success": true,
+      "details": "Status: 422 (Expected 422 for invalid email)",
+      "timestamp": "2026-02-06T18:24:40.251201"
+    },
+    {
+      "test": "Get Contact Messages",
+      "success": true,
+      "details": "Status: 200, Messages count: 1",
+      "timestamp": "2026-02-06T18:24:40.289583"
+    },
+    {
+      "test": "Resume Download Endpoint",
+      "success": true,
+      "details": "Status: 200, Content-Type: application/pdf",
+      "timestamp": "2026-02-06T18:24:40.333279"
+    },
+    {
+      "test": "Status Check Endpoints",
+      "success": true,
+      "details": "Create: 200, Get: 200",
+      "timestamp": "2026-02-06T18:24:40.423642"
+    }
+  ]
+}
