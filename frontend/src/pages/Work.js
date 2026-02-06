@@ -2,55 +2,31 @@ import React, { useState, useEffect } from 'react';
 import GlitchText from '../components/GlitchText';
 import ProjectCard from '../components/ProjectCard';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
 export default function Work() {
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const placeholderProjects = [
-      {
-        id: 1,
-        title: 'Project Alpha',
-        category: 'Motion Graphics',
-        thumbnail: 'https://images.unsplash.com/photo-1706705556261-c02146118d58?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
-        video: 'https://www.w3schools.com/html/mov_bbb.mp4',
-      },
-      {
-        id: 2,
-        title: 'Project Beta',
-        category: 'VFX Compositing',
-        thumbnail: 'https://images.unsplash.com/photo-1663153204614-6dfc8feebbf9?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
-        video: 'https://www.w3schools.com/html/movie.mp4',
-      },
-      {
-        id: 3,
-        title: 'Project Gamma',
-        category: 'Color Grading',
-        thumbnail: 'https://images.unsplash.com/photo-1629981892096-76ee7793ba0b?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
-        video: 'https://www.w3schools.com/html/mov_bbb.mp4',
-      },
-      {
-        id: 4,
-        title: 'Project Delta',
-        category: 'Short Film',
-        thumbnail: 'https://images.unsplash.com/photo-1706705556261-c02146118d58?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
-        video: 'https://www.w3schools.com/html/movie.mp4',
-      },
-      {
-        id: 5,
-        title: 'Project Epsilon',
-        category: 'Commercial',
-        thumbnail: 'https://images.unsplash.com/photo-1663153204614-6dfc8feebbf9?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
-        video: 'https://www.w3schools.com/html/mov_bbb.mp4',
-      },
-      {
-        id: 6,
-        title: 'Project Zeta',
-        category: 'Music Video',
-        thumbnail: 'https://images.unsplash.com/photo-1629981892096-76ee7793ba0b?crop=entropy&cs=srgb&fm=jpg&q=85&w=800',
-        video: 'https://www.w3schools.com/html/movie.mp4',
-      },
-    ];
-    setProjects(placeholderProjects);
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/projects`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch projects');
+        }
+        const data = await response.json();
+        setProjects(data);
+      } catch (err) {
+        console.error('Error fetching projects:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
   }, []);
 
   return (
