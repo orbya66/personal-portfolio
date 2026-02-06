@@ -152,6 +152,115 @@ async def download_resume():
     )
 
 
+# Projects endpoints
+@api_router.get("/projects", response_model=List[Project])
+async def get_projects():
+    """Get all projects from MongoDB or JSON file"""
+    # Try MongoDB first
+    projects = await db.projects.find({}, {"_id": 0}).to_list(1000)
+    
+    if not projects:
+        # Fallback to JSON file
+        projects_file = ROOT_DIR / "data" / "projects.json"
+        if projects_file.exists():
+            with open(projects_file, 'r') as f:
+                projects = json.load(f)
+    
+    return projects
+
+
+@api_router.get("/projects/{project_id}", response_model=Project)
+async def get_project(project_id: int):
+    """Get a specific project by ID"""
+    project = await db.projects.find_one({"id": project_id}, {"_id": 0})
+    
+    if not project:
+        # Try JSON file
+        projects_file = ROOT_DIR / "data" / "projects.json"
+        if projects_file.exists():
+            with open(projects_file, 'r') as f:
+                projects = json.load(f)
+                project = next((p for p in projects if p["id"] == project_id), None)
+    
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    return project
+
+
+@api_router.post("/projects", response_model=Project)
+async def create_project(project: ProjectCreate):
+    """Add a new project"""
+    # Get the highest ID
+    existing_projects = await db.projects.find({}, {"_id": 0, "id": 1}).to_list(1000)
+    
+    if not existing_projects:
+        # Check JSON file
+        projects_file = ROOT_DIR / "data" / "projects.json"
+        if projects_file.exists():
+            with open(projects_file, 'r') as f:
+                existing_projects = json.load(f)
+    
+    max_id = max([p.get("id", 0) for p in existing_projects]) if existing_projects else 0
+    new_id = max_id + 1
+    
+    project_dict = project.model_dump()
+    project_obj = Project(id=new_id, **project_dict)
+    
+    doc = project_obj.model_dump()
+    await db.projects.insert_one(doc)
+    
+    return project_obj
+
+
+@api_router.put("/projects/{project_id}", response_model=Project)
+async def update_project(project_id: int, project: ProjectCreate):
+    """Update an existing project"""
+    existing = await db.projects.find_one({"id": project_id}, {"_id": 0})
+    
+    if not existing:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    update_data = project.model_dump()
+    update_data["id"] = project_id
+    
+    await db.projects.replace_one({"id": project_id}, update_data)
+    
+    return Project(**update_data)
+
+
+@api_router.delete("/projects/{project_id}")
+async def delete_project(project_id: int):
+    """Delete a project"""
+    result = await db.projects.delete_one({"id": project_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    return {"message": "Project deleted successfully", "id": project_id}
+
+
+@api_router.post("/projects/sync")
+async def sync_projects_to_db():
+    """Sync projects from JSON file to MongoDB"""
+    projects_file = ROOT_DIR / "data" / "projects.json"
+    
+    if not projects_file.exists():
+        raise HTTPException(status_code=404, detail="Projects JSON file not found")
+    
+    with open(projects_file, 'r') as f:
+        projects = json.load(f)
+    
+    # Clear existing projects
+    await db.projects.delete_many({})
+    
+    # Insert all projects
+    if projects:
+        await db.projects.insert_many(projects)
+    
+    return {"message": f"Synced {len(projects)} projects to database"}
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
