@@ -1,9 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import GlitchText from '../components/GlitchText';
-import { ArrowRight, Video, Code, Mail } from 'lucide-react';
+import { ArrowRight, Video, Code, Mail, Play } from 'lucide-react';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export default function Home() {
+  const [featuredProjects, setFeaturedProjects] = useState([]);
+  const [quote, setQuote] = useState({ quote: '', author: '' });
+  const [aspectRatio, setAspectRatio] = useState('16:9');
+
+  useEffect(() => {
+    // Fetch featured projects
+    const fetchFeaturedProjects = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/projects`);
+        const data = await response.json();
+        const featured = data.filter(p => p.featured);
+        
+        // If no featured, pick random ones
+        const projectsToShow = featured.length > 0 
+          ? featured.slice(0, 3) 
+          : data.slice(0, 3);
+        
+        setFeaturedProjects(projectsToShow);
+        
+        // Determine aspect ratio (can be made dynamic per project)
+        // For now, using a single setting
+        setAspectRatio('16:9'); // Change to '9:16' to show 3 vertical videos
+      } catch (err) {
+        console.error('Error fetching projects:', err);
+      }
+    };
+
+    // Fetch quote of the day
+    const fetchQuote = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/quote`);
+        const data = await response.json();
+        setQuote(data);
+      } catch (err) {
+        console.error('Error fetching quote:', err);
+      }
+    };
+
+    fetchFeaturedProjects();
+    fetchQuote();
+  }, []);
   const quickLinks = [
     { to: '/work', icon: Video, label: 'Projects', desc: 'THE VAULT' },
     { to: '/skills', icon: Code, label: 'Skills', desc: 'TECH SPECS' },
