@@ -56,23 +56,11 @@ export default function Home() {
   return (
     <div className="min-h-screen pt-16 grid-pattern">
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="hud-frame absolute inset-0">
-          <div className="hud-content w-full h-full bg-gradient-to-b from-black/50 via-black/30 to-black flex items-center justify-center">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover opacity-30"
-              poster="https://images.unsplash.com/photo-1706705556261-c02146118d58?crop=entropy&cs=srgb&fm=jpg&q=85"
-            >
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-            </video>
-          </div>
-        </div>
+        {/* Simple background without video */}
+        <div className="absolute inset-0 bg-black grid-pattern" />
 
         <div className="relative z-10 w-full">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center min-h-screen">
             <div className="animate-fade-in-up w-full flex flex-col items-center">
               <div className="mb-8">
                 <span className="inline-block px-6 py-2 border border-[#FF4D00]/50 bg-black/50 backdrop-blur-sm text-[#FF4D00] font-mono text-xs tracking-widest">
