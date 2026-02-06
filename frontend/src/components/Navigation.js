@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Activity } from 'lucide-react';
 
-export const Navigation = () => {
+function Navigation() {
   const location = useLocation();
 
   const links = [
@@ -52,4 +52,6 @@ export const Navigation = () => {
       </div>
     </nav>
   );
-};
+}
+
+export default Navigation;

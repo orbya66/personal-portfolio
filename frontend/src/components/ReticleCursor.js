@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export const ReticleCursor = () => {
+function ReticleCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
@@ -62,4 +62,6 @@ export const ReticleCursor = () => {
       </div>
     </>
   );
-};
+}
+
+export default ReticleCursor;

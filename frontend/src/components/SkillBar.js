@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export const SkillBar = ({ skill, level, index }) => {
+function SkillBar({ skill, level, index }) {
   const [animatedLevel, setAnimatedLevel] = useState(0);
   
   useEffect(() => {
@@ -42,4 +42,6 @@ export const SkillBar = ({ skill, level, index }) => {
       </div>
     </div>
   );
-};
+}
+
+export default SkillBar;

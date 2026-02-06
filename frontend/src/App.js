@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ReticleCursor } from './components/ReticleCursor';
-import { Navigation } from './components/Navigation';
+import ReticleCursor from './components/ReticleCursor';
+import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import Work from './pages/Work';
 import Skills from './pages/Skills';
