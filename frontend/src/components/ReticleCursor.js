@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 function ReticleCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [trail, setTrail] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -15,6 +16,16 @@ function ReticleCursor() {
         const newTrail = [...prevTrail, { ...newPosition, id: Date.now() + Math.random() }];
         return newTrail.slice(-25); // Keep last 25 points for longer trail
       });
+
+      // Clear existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      // Set new timeout to fade trail when mouse stops
+      timeoutRef.current = setTimeout(() => {
+        setTrail([]);
+      }, 150);
     };
 
     const handleMouseOver = (e) => {
@@ -38,6 +49,9 @@ function ReticleCursor() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseover', handleMouseOver);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, []);
 
