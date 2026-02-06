@@ -142,11 +142,14 @@ export default function Home() {
           {/* Section Header */}
           <div className="mb-12 text-center">
             <span className="inline-block px-4 py-1 border border-[#FF4D00]/50 bg-black/50 backdrop-blur-sm text-[#FF4D00] font-mono text-xs tracking-widest mb-4">
-              FEATURED_HIGHLIGHTS: ACTIVE
+              PRIORITY_MISSIONS: ACTIVE
             </span>
             <h2 className="font-['Rajdhani'] text-4xl md:text-5xl font-bold tracking-tighter uppercase text-white mb-4">
-              <GlitchText text="LATEST WORK" delay={0} />
+              <GlitchText text="MISSION BRIEFING" delay={0} />
             </h2>
+            <p className="text-white/60 font-mono text-xs max-w-2xl mx-auto">
+              JARVIS_PROTOCOL: DISPLAYING_PRIORITY_TARGETS
+            </p>
           </div>
 
           {/* Video Highlights Grid */}
