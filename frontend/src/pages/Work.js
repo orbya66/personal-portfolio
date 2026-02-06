@@ -77,14 +77,16 @@ export default function Work() {
         </div>
 
         <div className="mt-16 text-center opacity-0 animate-fade-in-up" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
-          <HUDFrame className="inline-block p-6 bg-black/30 backdrop-blur-sm">
-            <p className="text-[#FF4D00] font-mono text-sm tracking-wider">
-              // PROJECTS ARRAY EDITABLE IN WORK.JS
-            </p>
-            <p className="text-white/40 font-mono text-xs mt-2">
-              Replace placeholder data with your actual video projects
-            </p>
-          </HUDFrame>
+          <div className="hud-frame inline-block p-6 bg-black/30 backdrop-blur-sm">
+            <div className="hud-content">
+              <p className="text-[#FF4D00] font-mono text-sm tracking-wider">
+                // PROJECTS ARRAY EDITABLE IN WORK.JS
+              </p>
+              <p className="text-white/40 font-mono text-xs mt-2">
+                Replace placeholder data with your actual video projects
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
