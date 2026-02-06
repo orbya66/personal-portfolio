@@ -312,7 +312,7 @@ export default function Home() {
               <div className="hud-frame p-8 bg-black/30 backdrop-blur-sm">
                 <div className="hud-content">
                   <div className="flex items-start gap-4">
-                    <div className="text-[#FF4D00] text-6xl font-['Rajdhani'] leading-none">"</div>
+                    <div className="text-[#FF4D00] text-6xl font-['Rajdhani'] leading-none">&ldquo;</div>
                     <div className="flex-1">
                       <p className="text-white/90 font-['Barlow'] text-lg md:text-xl italic leading-relaxed mb-4">
                         {quote.quote}
