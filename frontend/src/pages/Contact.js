@@ -185,12 +185,14 @@ export default function Contact() {
                   </a>
                 ))}
               </div>
-            </HUDFrame>
+              </div>
+            </div>
 
-            <HUDFrame className="p-6 bg-black/50 backdrop-blur-sm">
-              <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
-                Response Protocol
-              </h3>
+            <div className="hud-frame p-6 bg-black/50 backdrop-blur-sm">
+              <div className="hud-content">
+                <h3 className="text-[#FF4D00] font-['Rajdhani'] text-xl font-bold tracking-wide uppercase mb-4">
+                  Response Protocol
+                </h3>
               <div className="space-y-3 text-sm">
                 <div className="flex items-start gap-2">
                   <div className="w-2 h-2 bg-[#FF4D00] mt-1.5 animate-pulse" />
