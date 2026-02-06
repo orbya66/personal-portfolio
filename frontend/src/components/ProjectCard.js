@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import HUDFrame from './HUDFrame';
 import { Play } from 'lucide-react';
 
 function ProjectCard({ project, index }) {
