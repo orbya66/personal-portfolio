@@ -17,7 +17,7 @@ function Navigation() {
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-3 group">
             <img 
-              src="https://customer-assets.emergentagent.com/job_ironhud-portfolio/artifacts/dfpjzubn_image.webp"
+              src="https://customer-assets.emergentagent.com/job_ironhud-portfolio/artifacts/0lt0be1r_ORBYA%20LOGO.png"
               alt="ORBYA Logo"
               className="h-10 w-auto object-contain"
             />
