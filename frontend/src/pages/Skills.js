@@ -121,17 +121,19 @@ export default function Skills() {
               className="opacity-0 animate-fade-in-up"
               style={{ animationDelay: `${0.8 + index * 0.1}s`, animationFillMode: 'forwards' }}
             >
-              <HUDFrame className="p-6 bg-black/50 backdrop-blur-sm text-center">
-                <p className="text-4xl font-['Rajdhani'] font-bold text-[#FF4D00] mb-2">
-                  {stat.value}
-                </p>
-                <p className="text-white font-['Rajdhani'] text-sm tracking-wide uppercase mb-1">
-                  {stat.label}
-                </p>
-                <p className="text-white/40 font-mono text-xs tracking-widest">
-                  {stat.unit}
-                </p>
-              </HUDFrame>
+              <div className="hud-frame p-6 bg-black/50 backdrop-blur-sm text-center">
+                <div className="hud-content">
+                  <p className="text-4xl font-['Rajdhani'] font-bold text-[#FF4D00] mb-2">
+                    {stat.value}
+                  </p>
+                  <p className="text-white font-['Rajdhani'] text-sm tracking-wide uppercase mb-1">
+                    {stat.label}
+                  </p>
+                  <p className="text-white/40 font-mono text-xs tracking-widest">
+                    {stat.unit}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
