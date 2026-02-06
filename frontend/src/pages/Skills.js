@@ -196,7 +196,7 @@ export default function Skills() {
         <div className="text-center opacity-0 animate-fade-in-up" style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}>
           <button
             onClick={handleDownloadResume}
-            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-black/50 backdrop-blur-sm border-2 border-[#FF4D00] text-[#FF4D00] font-['Rajdhani'] font-bold text-lg tracking-wider uppercase hover:bg-[#FF4D00] hover:text-black transition-all duration-300"
+            className="group relative inline-flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 bg-black/50 backdrop-blur-sm border-2 border-[#FF4D00] text-[#FF4D00] font-['Rajdhani'] font-bold text-base md:text-lg tracking-wider uppercase hover:bg-[#FF4D00] hover:text-black transition-all duration-300"
             data-testid="download-resume-btn"
           >
             <Download className="w-5 h-5" strokeWidth={2} />
