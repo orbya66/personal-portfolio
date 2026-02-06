@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "name": "After Effects",
+    "level": 95,
+    "module": "AE_MODULE_V2.0",
+    "category": "software",
+    "icon": "🎬"
+  },
+  {
+    "id": 2,
+    "name": "Premiere Pro",
+    "level": 90,
+    "module": "PR_MODULE_V1.8",
+    "category": "software",
+    "icon": "✂️"
+  },
+  {
+    "id": 3,
+    "name": "Photoshop",
+    "level": 85,
+    "module": "PS_MODULE_V2.1",
+    "category": "software",
+    "icon": "🎨"
+  },
+  {
+    "id": 4,
+    "name": "DaVinci Resolve",
+    "level": 88,
+    "module": "DR_MODULE_V1.9",
+    "category": "software",
+    "icon": "🎥"
+  },
+  {
+    "id": 5,
+    "name": "Motion Graphics",
+    "level": 92,
+    "module": "MG_SYSTEM_V3.0",
+    "category": "creative",
+    "icon": "⚡"
+  },
+  {
+    "id": 6,
+    "name": "Color Grading",
+    "level": 87,
+    "module": "CG_SYSTEM_V2.5",
+    "category": "creative",
+    "icon": "🌈"
+  },
+  {
+    "id": 7,
+    "name": "VFX Compositing",
+    "level": 90,
+    "module": "VFX_SYSTEM_V2.8",
+    "category": "creative",
+    "icon": "✨"
+  },
+  {
+    "id": 8,
+    "name": "Sound Design",
+    "level": 75,
+    "module": "SD_MODULE_V1.5",
+    "category": "creative",
+    "icon": "🔊"
+  }
+]
