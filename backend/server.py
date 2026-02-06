@@ -1,10 +1,12 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
+import shutil
 from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
@@ -16,6 +18,10 @@ import json
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# Create uploads directory if not exists
+UPLOADS_DIR = ROOT_DIR / "static" / "uploads"
+UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
@@ -23,6 +29,9 @@ db = client[os.environ['DB_NAME']]
 
 # Create the main app without a prefix
 app = FastAPI()
+
+# Mount static files for uploads
+app.mount("/static", StaticFiles(directory=str(ROOT_DIR / "static")), name="static")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
