@@ -21,6 +21,7 @@
 }
 
 /* Restore cursor for iframes (YouTube/Vimeo embeds) */
+.portfolio-cursor iframe,
 iframe {
     cursor: auto !important;
 }
