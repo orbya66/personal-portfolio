@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ReticleCursor from './components/ReticleCursor';
 import Navigation from './components/Navigation';
@@ -10,6 +10,12 @@ import Admin from './pages/Admin';
 import '@/App.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+function CursorWrapper() {
+  const location = useLocation();
+  if (location.pathname === '/admin') return null;
+  return <ReticleCursor />;
+}
 
 function App() {
   const [configLoaded, setConfigLoaded] = useState(false);
@@ -49,8 +55,8 @@ function App() {
 
   return (
     <div className="App">
-      <ReticleCursor />
       <BrowserRouter>
+        <CursorWrapper />
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
