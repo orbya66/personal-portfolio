@@ -1,193 +1,150 @@
 # ORBYA Portfolio - Product Requirements Document
 
 ## Original Problem Statement
-Build a high-end, multi-page portfolio website for video editor/motion designer "Shrunit Shirke" (brand name: ORBYA) with an "Iron Man HUD" aesthetic. **Everything should be customizable and dynamic, including colors.**
+Build a high-end, multi-page portfolio website for video editor/motion designer "Shrunit Shirke" (brand name: ORBYA) with an "Iron Man HUD" aesthetic. Everything should be customizable and dynamic.
 
-## Core Requirements
-- **Visual Theme:** Pure black background, glowing orange accents (fully customizable via admin panel)
-- **Pages:** Home, Work (The Vault), Skills (Technical Specs), Contact (Comms), Admin Panel
-- **Content:** Dynamic projects, skills, quotes fetched from backend
-- **Custom Cursor:** Arc reactor-inspired cursor with smooth motion trail
-- **Animations:** HUD-style entrance animations, hover effects
-- **Fully Customizable:** Everything editable via Admin Panel - no code changes needed
+## Key Features Implemented
 
-## User Personas
-- Primary: Potential clients (film studios, content creators) looking to hire a video editor
-- Secondary: Recruiters reviewing portfolio
+### 1. Custom Arc Reactor Cursor ✅
+- Perfectly centered equilateral triangles
+- Smooth rotation animation
+- Motion trail with fade effect
+- Expands on hovering interactive elements
+
+### 2. Video Playback ✅
+- Featured videos on homepage are clickable and play in modal
+- Project cards have hover-to-preview for direct video files (MP4)
+- Supports YouTube, Vimeo, Google Drive, and direct MP4 URLs
+- Video modal with autoplay and controls
+
+### 3. Admin Panel ✅ (`/admin`)
+- Password protected (default: orbya2024)
+- **Projects Manager:**
+  - Category dropdown with existing categories
+  - "Add New Category" option
+  - File upload for thumbnails and videos
+  - Supports YouTube/Vimeo/MP4/Google Drive URLs
+- **Skills Manager:** Add/edit/delete with category grouping
+- **Media Library:** Upload and manage images/videos
+- **Stats Manager:** Customize portfolio statistics
+- **Quotes Manager:** Manage daily quotes
+- **Site Config:** Edit name, tagline, social links, HUD info
+- **Color Theme Editor:**
+  - 8 preset themes
+  - Custom color pickers
+  - Live preview
+  - Real-time color application
+
+### 4. Dynamic Content System ✅
+- All content fetched from API
+- Categories auto-detected from projects
+- Skills auto-grouped by category
+- Stats customizable via admin panel
 
 ## Architecture
 ```
 /app/
 ├── backend/ (FastAPI)
 │   ├── data/
-│   │   ├── projects.json       # Dynamic project data
-│   │   ├── skills.json         # Dynamic skills data
-│   │   ├── quotes.json         # Quote of the day pool
-│   │   ├── stats.json          # Portfolio statistics
-│   │   ├── config.json         # Site configuration & colors
-│   │   └── CUSTOMIZATION_GUIDE.md
-│   ├── static/
-│   │   └── ORBYA_Resume.pdf
-│   └── server.py               # API endpoints (full CRUD)
+│   │   ├── projects.json
+│   │   ├── skills.json
+│   │   ├── quotes.json
+│   │   ├── stats.json
+│   │   └── config.json
+│   ├── static/uploads/
+│   │   ├── images/
+│   │   └── videos/
+│   └── server.py
 └── frontend/ (React)
     ├── components/
-    │   ├── ReticleCursor.js    # Custom cursor
-    │   ├── GlitchText.js       # Text animation
-    │   ├── ProjectCard.js      # Project display (multi-aspect ratio)
-    │   ├── SkillBar.js         # Skill progress bar
-    │   └── Navigation.js
+    │   ├── ReticleCursor.js (Fixed alignment)
+    │   ├── ProjectCard.js (Hover video preview)
+    │   └── ...
     └── pages/
-        ├── Home.js             # HUD data displays, rotating rings
-        ├── Work.js             # Video modal, category filters
-        ├── Skills.js           # Auto-grouping categories
-        ├── Contact.js          # Contact form
-        └── Admin.js            # Full admin panel
+        ├── Home.js (Video modal)
+        ├── Work.js (Video modal, filters)
+        ├── Skills.js
+        ├── Contact.js
+        └── Admin.js (Complete admin panel)
 ```
 
 ## API Endpoints
+
 ### Projects
-- `GET /api/projects` - Fetch all projects
-- `POST /api/projects` - Add new project
-- `PUT /api/projects/{id}` - Update project
-- `DELETE /api/projects/{id}` - Delete project
-- `POST /api/projects/sync` - Sync JSON to MongoDB
+- `GET /api/projects` - List all
+- `POST /api/projects` - Create
+- `PUT /api/projects/{id}` - Update
+- `DELETE /api/projects/{id}` - Delete
 
 ### Skills
-- `GET /api/skills` - Fetch all skills
-- `POST /api/skills` - Add new skill
-- `PUT /api/skills/{id}` - Update skill
-- `DELETE /api/skills/{id}` - Delete skill
-- `POST /api/skills/sync` - Sync JSON to MongoDB
+- `GET /api/skills` - List all
+- `POST /api/skills` - Create
+- `PUT /api/skills/{id}` - Update
+- `DELETE /api/skills/{id}` - Delete
+
+### Media Upload
+- `POST /api/upload` - Upload file (images/videos)
+- `GET /api/media` - List uploaded files
+- `DELETE /api/media/{type}/{filename}` - Delete file
 
 ### Configuration
-- `GET /api/config` - Get site configuration
-- `PUT /api/config` - Update site configuration
-- `GET /api/stats` - Get portfolio stats
-- `PUT /api/stats` - Update portfolio stats
+- `GET /api/config` - Get site config
+- `PUT /api/config` - Update config (including colors)
+- `GET /api/stats` - Get stats
+- `PUT /api/stats` - Update stats
 - `GET /api/quotes` - Get all quotes
 - `PUT /api/quotes` - Update quotes
-- `POST /api/admin/auth` - Admin authentication
-- `PUT /api/admin/password` - Change admin password
 
-### Other
-- `GET /api/quote` - Random quote
-- `POST /api/contact` - Contact form submission
-- `GET /api/contact` - List contact messages
-- `GET /api/resume/download` - Download resume
+### Admin
+- `POST /api/admin/auth` - Login
+- `PUT /api/admin/password` - Change password
 
-## What's Been Implemented (Dec 2025)
+## Color Themes
+1. Iron Man (Default) - Orange/Black
+2. Cyberpunk - Cyan/Dark
+3. Matrix - Green/Black
+4. Purple Haze - Purple/Dark
+5. Gold Rush - Gold/Dark
+6. Ocean Blue - Blue/Navy
+7. Hot Pink - Pink/Dark
+8. Emerald - Green/Dark
 
-### ✅ Completed Features
+## Video Support
+- **YouTube:** Auto-detects and embeds
+- **Vimeo:** Auto-detects and embeds
+- **Google Drive:** Extracts file ID and creates preview URL
+- **Direct MP4:** Native video player with autoplay on hover
 
-**Admin Panel (NEW - /admin):**
-- Password-protected access (default: orbya2024)
-- **Projects Manager:** Add, edit, delete projects with thumbnails
-- **Skills Manager:** Add, edit, delete skills with level slider
-- **Stats Manager:** Customize portfolio statistics
-- **Quotes Manager:** Add, edit, delete daily quotes
-- **Site Config:** Edit site name, tagline, social links, HUD info
-- **Color Theme Editor:**
-  - 8 preset themes (Iron Man, Cyberpunk, Matrix, Purple Haze, Gold Rush, Ocean Blue, Hot Pink, Emerald)
-  - Custom color pickers for all colors
-  - Live preview
-  - Real-time color application via CSS variables
-- **Messages Viewer:** View all contact form submissions
-
-**Home Page:**
-- Live system time display (SYS_TIME)
-- Rotating arc reactor rings around title
-- Status indicators (ONLINE, LOCATION, VERSION)
-- Availability badges (AVAILABLE/FREELANCE)
-- Mission Briefing with featured project
-- Quote of the day
-
-**Work Page (The Vault):**
-- Dynamic category filters (auto-detected)
-- Stats bar (project count, categories, year range)
-- Masonry layout for mixed aspect ratios
-- Grid view option
-- Video modal player (YouTube/Vimeo/direct URLs)
-- Featured/year badges, tags display
-
-**Skills Page (Technical Specs):**
-- Auto-grouping by category
-- Dynamic column layout (1-3 columns)
-- Skill count per category
-- Customizable stats section
-- Resume download
-
-**Contact Page:**
-- Form submission to MongoDB
-- Social links
-- Response protocol info
-- Availability status
-
-**Global Features:**
-- Custom arc reactor cursor with motion trail
-- Decorative corner brackets on all pages
-- HUD-style animations
-- Responsive design
-- Dynamic color theming via CSS variables
-- Full CRUD API for all content
-
-### ⚠️ Mocked/Simplified
-- Contact form stores messages but doesn't send emails
-
-## Dynamic Content System
-
-### Aspect Ratios Supported
-- `16:9` / `landscape` - Standard widescreen
-- `9:16` / `vertical` - Instagram/TikTok
-- `1:1` / `square` - Square format
-- `4:3` - Classic TV
-- `21:9` / `ultrawide` - Cinematic
-
-### Skill Categories (Auto-Detected)
-- `software` → CPU icon
-- `creative` → Sparkles icon
-- `tools` → Wrench icon
-- `design` → Palette icon
-- `development` → Code icon
-
-### Color Presets Available
-1. Iron Man (Orange/Black) - Default
-2. Cyberpunk (Cyan/Dark)
-3. Matrix (Green/Black)
-4. Purple Haze (Purple/Dark)
-5. Gold Rush (Gold/Dark)
-6. Ocean Blue (Blue/Dark Blue)
-7. Hot Pink (Pink/Dark)
-8. Emerald (Green/Dark Green)
-
-## Backlog
-
-### P1 (High Priority)
-- [ ] Implement "Glitch" page transitions
-- [ ] Implement "Decode" text entrance animations
-- [ ] Email integration for contact form
-
-### P2 (Medium Priority)
-- [ ] Parallax scrolling effects
-- [ ] SEO optimization
-- [ ] Performance optimization
-
-### P3 (Low Priority)
-- [ ] Project detail pages
-- [ ] Blog/journal section
-
-## Technical Notes
-- `framer-motion` was removed due to Babel compilation errors
-- Animations implemented with CSS keyframes and JavaScript
-- Data stored in MongoDB (with JSON file fallback)
-- Colors are applied via CSS custom properties (variables)
-- Admin panel uses session storage for auth state
+## Fixes Applied (Dec 2025)
+1. ✅ Arc reactor cursor - Fixed triangle alignment using equilateral triangle math
+2. ✅ Featured videos now playable - Added video modal
+3. ✅ Hover video autoplay - Direct videos play on hover
+4. ✅ Admin panel config saves properly - Fixed save functions
+5. ✅ Category dropdown - Shows existing categories + add new option
+6. ✅ Admin panel alignment - Removed HUD frame overlapping issues
+7. ✅ File upload - Images and videos can be uploaded directly
+8. ✅ Google Drive support - Added URL parsing for Drive links
 
 ## Preview URL
 https://hudstyled-folio.preview.emergentagent.com
 
-## Admin Panel Access
-- URL: https://hudstyled-folio.preview.emergentagent.com/admin
-- Default Password: `orbya2024`
+## Admin Access
+- URL: /admin
+- Password: orbya2024
 
-## Customization Guide
-See `/app/backend/data/CUSTOMIZATION_GUIDE.md` for complete documentation on adding/editing content via JSON files or API.
+## Backlog
+
+### P1 (High Priority)
+- [ ] Glitch page transitions
+- [ ] Decode text animations
+- [ ] Email integration for contact form
+
+### P2 (Medium Priority)
+- [ ] Parallax scrolling
+- [ ] SEO optimization
+- [ ] Image optimization/compression
+
+### P3 (Low Priority)
+- [ ] Project detail pages
+- [ ] Blog section
+- [ ] Analytics integration
