@@ -81,15 +81,7 @@ textarea:focus {
   box-shadow: 0 0 15px rgba(255, 77, 0, 0.3);
 }
 
-/* Image lazy load effect */
+/* Image transitions */
 img {
   transition: opacity 0.3s ease;
-}
-
-img[loading='lazy'] {
-  opacity: 0;
-}
-
-img[loading='lazy'].loaded {
-  opacity: 1;
 }
