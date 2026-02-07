@@ -32,7 +32,7 @@ function ProjectCard({ project, index, onPlayClick }) {
 
   return (
     <div
-      className="break-inside-avoid mb-4 relative group opacity-0 animate-fade-in-up"
+      className="break-inside-avoid mb-4 relative group animate-fade-in-up"
       style={{ animationDelay: `${Math.min(index * 0.1, 1)}s`, animationFillMode: 'forwards' }}
       data-testid={`project-card-${project.id}`}
     >
