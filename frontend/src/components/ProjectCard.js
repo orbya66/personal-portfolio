@@ -9,7 +9,6 @@ function getYouTubeThumb(url) {
 }
 
 function ProjectCard({ project, index, onPlayClick }) {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   const getAspectClass = () => {
@@ -43,20 +42,11 @@ function ProjectCard({ project, index, onPlayClick }) {
       >
         {/* Thumbnail */}
         <div className={`relative ${getAspectClass()} overflow-hidden bg-black/80`}>
-          {!imageLoaded && !imageError && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
-
           {thumbnailSrc && !imageError ? (
             <img
               src={thumbnailSrc}
               alt={project.title}
-              className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
-                imageLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
-              onLoad={() => setImageLoaded(true)}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               onError={() => setImageError(true)}
               loading="lazy"
             />
