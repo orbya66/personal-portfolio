@@ -153,7 +153,7 @@ export default function Skills() {
           <div className="text-center py-16">
             <Cpu className="w-16 h-16 text-[#FF4D00]/30 mx-auto mb-4" strokeWidth={1} />
             <p className="text-[#FF4D00] font-mono text-sm">NO SKILLS FOUND</p>
-            <p className="text-white/40 font-mono text-xs mt-2">Add skills via API: POST /api/skills</p>
+            <p className="text-white/40 font-mono text-xs mt-2">No skills found</p>
           </div>
         ) : (
           <>

@@ -291,7 +291,7 @@ export default function Work() {
             <Grid3X3 className="w-16 h-16 text-[#FF4D00]/30 mx-auto mb-4" strokeWidth={1} />
             <p className="text-[#FF4D00] font-mono text-sm">NO PROJECTS FOUND</p>
             <p className="text-white/40 font-mono text-xs mt-2">
-              {filter !== 'all' ? 'Try a different category filter' : 'Add projects via API: POST /api/projects'}
+              {filter !== 'all' ? 'Try a different category filter' : 'No projects found'}
             </p>
           </div>
         ) : viewMode === 'masonry' ? (
