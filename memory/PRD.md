@@ -126,7 +126,7 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 8. ✅ Google Drive support - Added URL parsing for Drive links
 
 ## Preview URL
-https://hudstyled-folio.preview.emergentagent.com
+https://tech-specs-preview-1.preview.emergentagent.com
 
 ## Admin Access
 - URL: /admin
