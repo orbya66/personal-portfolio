@@ -78,6 +78,7 @@ class Project(BaseModel):
     featured: Optional[bool] = False
     tags: Optional[List[str]] = []
     year: Optional[int] = None
+    aspectRatio: Optional[str] = "16:9"
 
 class ProjectCreate(BaseModel):
     title: str
@@ -88,6 +89,7 @@ class ProjectCreate(BaseModel):
     featured: Optional[bool] = False
     tags: Optional[List[str]] = []
     year: Optional[int] = None
+    aspectRatio: Optional[str] = "16:9"
 
 
 class Skill(BaseModel):
