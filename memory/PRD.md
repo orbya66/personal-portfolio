@@ -94,6 +94,10 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 8. Navigation bar hidden on admin page for clean admin UX
 9. aspectRatio field added to Project model (was silently dropped)
 10. YouTube autoplay: added mute=1 for browser autoplay compliance
+11. **Thumbnails fixed**: Removed `img[loading='lazy']{opacity:0}` from App.css that hid all images
+12. **Hover-to-play removed**: Replaced with click-to-play in video modal
+13. **Navigation redesigned**: Clean bar with active tab highlight, admin link added
+14. **Auto YouTube thumbnails**: Backend auto-generates YouTube thumbnails from video URLs
 
 ## Admin Access
 - URL: /admin
