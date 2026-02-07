@@ -20,11 +20,8 @@
     cursor: none !important;
 }
 
-/* Restore cursor for interactive embeds */
-iframe,
-video,
-embed,
-object {
+/* Restore cursor for iframes (YouTube/Vimeo embeds) */
+iframe {
     cursor: auto !important;
 }
 

@@ -7,12 +7,11 @@ function ReticleCursor() {
   const [isOverIframe, setIsOverIframe] = useState(false);
   const animationFrameRef = useRef(null);
 
-  // Detect if mouse is near/over an iframe or video embed
+  // Detect if mouse is near/over an iframe (YouTube/Vimeo embeds only)
   const checkIframeProximity = useCallback((x, y) => {
-    const iframes = document.querySelectorAll('iframe, video, embed, object');
+    const iframes = document.querySelectorAll('iframe');
     for (const el of iframes) {
       const rect = el.getBoundingClientRect();
-      // Small padding so cursor hides slightly before reaching the iframe
       const pad = 5;
       if (
         x >= rect.left - pad && x <= rect.right + pad &&
