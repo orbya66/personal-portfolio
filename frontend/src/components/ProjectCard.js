@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Play } from 'lucide-react';
 
-// Extract YouTube video ID from various URL formats
 function getYouTubeThumb(url) {
   if (!url) return null;
   const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
   return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
 }
 
+function isDirectVideoUrl(url) {
+  if (!url) return false;
+  return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url) ||
+         url.includes('/api/uploads/videos/') ||
+         url.includes('/uploads/videos/');
+}
+
 function ProjectCard({ project, index, onPlayClick }) {
   const [imageError, setImageError] = useState(false);
+  const videoThumbRef = useRef(null);
 
   const getAspectClass = () => {
     switch (project.aspectRatio) {
@@ -21,8 +28,19 @@ function ProjectCard({ project, index, onPlayClick }) {
     }
   };
 
-  // Use thumbnail, fallback to YouTube auto-thumbnail, then placeholder
-  const thumbnailSrc = project.thumbnail || getYouTubeThumb(project.videoUrl) || null;
+  const isDirectVideo = isDirectVideoUrl(project.videoUrl);
+  const youtubeThumb = getYouTubeThumb(project.videoUrl);
+  const thumbnailSrc = project.thumbnail || youtubeThumb || null;
+
+  // For direct videos: seek to first frame when metadata loads
+  useEffect(() => {
+    const vid = videoThumbRef.current;
+    if (vid) {
+      const handleLoaded = () => { vid.currentTime = 0.1; };
+      vid.addEventListener('loadeddata', handleLoaded);
+      return () => vid.removeEventListener('loadeddata', handleLoaded);
+    }
+  }, []);
 
   const handleClick = () => {
     if (onPlayClick && project.videoUrl) {
@@ -36,13 +54,24 @@ function ProjectCard({ project, index, onPlayClick }) {
       style={{ animationDelay: `${Math.min(index * 0.1, 1)}s`, animationFillMode: 'forwards' }}
       data-testid={`project-card-${project.id}`}
     >
-      <div 
+      <div
         className="overflow-hidden bg-black/50 backdrop-blur-sm border border-[var(--primary)]/20 hover:border-[var(--primary)]/60 transition-all duration-300 cursor-pointer"
         onClick={handleClick}
       >
         {/* Thumbnail */}
         <div className={`relative ${getAspectClass()} overflow-hidden bg-black/80`}>
-          {thumbnailSrc && !imageError ? (
+          {isDirectVideo && !thumbnailSrc ? (
+            /* Direct video: show first frame using video element */
+            <video
+              ref={videoThumbRef}
+              src={project.videoUrl}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              preload="metadata"
+              muted
+              playsInline
+              data-testid={`project-thumb-video-${project.id}`}
+            />
+          ) : thumbnailSrc && !imageError ? (
             <img
               src={thumbnailSrc}
               alt={project.title}
@@ -73,12 +102,12 @@ function ProjectCard({ project, index, onPlayClick }) {
           </div>
 
           {project.year && (
-            <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 border border-[var(--primary)]/30 text-[var(--primary)] font-mono text-xs">
+            <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 border border-[var(--primary)]/30 text-[var(--primary)] font-mono text-xs z-10">
               {project.year}
             </div>
           )}
           {project.featured && (
-            <div className="absolute top-2 right-2 px-2 py-0.5 bg-[var(--primary)] text-black font-mono text-xs font-bold">
+            <div className="absolute top-2 right-2 px-2 py-0.5 bg-[var(--primary)] text-black font-mono text-xs font-bold z-10">
               FEATURED
             </div>
           )}
