@@ -101,6 +101,9 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 15. **Admin cursor fixed**: Scoped `cursor: none` to `.portfolio-cursor` class, toggled via CursorWrapper based on route
 16. **Video autoplay**: Added `muted` + `playsInline` to video elements, `mute=1` + `allow="autoplay"` to iframes
 17. **First-frame thumbnails**: Direct video files use `<video preload="metadata">` to display first frame as card thumbnail
+18. **Contact social links**: Fetched dynamically from /api/config instead of hardcoded generic URLs
+19. **Arc reactor cursor on admin**: Cursor now active on ALL pages including admin panel
+20. **Cursor over videos**: Only hides over iframes (YouTube embeds), stays visible over video elements and thumbnails
 
 ## Admin Access
 - URL: /admin
