@@ -22,6 +22,7 @@ function ProjectCard({ project, index, onPlayClick }) {
   const isDirectVideo = (url) => {
     if (!url) return false;
     return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url) || 
+           url.includes('/api/uploads/videos/') ||
            url.includes('/static/uploads/videos/') ||
            url.includes('/uploads/videos/');
   };
