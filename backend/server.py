@@ -547,6 +547,19 @@ ALLOWED_VIDEO_TYPES = {'video/mp4', 'video/webm', 'video/quicktime', 'video/x-ms
 MAX_FILE_SIZE = 100 * 1024 * 1024  # 100MB
 
 
+@api_router.get("/uploads/{media_type}/{filename}")
+async def serve_upload(media_type: str, filename: str):
+    """Serve uploaded files through /api route for ingress compatibility"""
+    if media_type not in ["images", "videos"]:
+        raise HTTPException(status_code=400, detail="Invalid media type")
+    
+    file_path = UPLOADS_DIR / media_type / filename
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="File not found")
+    
+    return FileResponse(path=file_path)
+
+
 @api_router.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     """Upload a file (image or video)"""
