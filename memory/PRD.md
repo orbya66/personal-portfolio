@@ -98,6 +98,9 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 12. **Hover-to-play removed**: Replaced with click-to-play in video modal
 13. **Navigation redesigned**: Clean bar with active tab highlight, admin link added
 14. **Auto YouTube thumbnails**: Backend auto-generates YouTube thumbnails from video URLs
+15. **Admin cursor fixed**: Scoped `cursor: none` to `.portfolio-cursor` class, toggled via CursorWrapper based on route
+16. **Video autoplay**: Added `muted` + `playsInline` to video elements, `mute=1` + `allow="autoplay"` to iframes
+17. **First-frame thumbnails**: Direct video files use `<video preload="metadata">` to display first frame as card thumbnail
 
 ## Admin Access
 - URL: /admin
