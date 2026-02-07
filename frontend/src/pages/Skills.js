@@ -259,19 +259,6 @@ export default function Skills() {
           </p>
         </div>
 
-        {/* Info Box */}
-        <div className="mt-10 text-center opacity-0 animate-fade-in-up" style={{ animationDelay: '1.4s', animationFillMode: 'forwards' }}>
-          <div className="hud-frame inline-block p-4 md:p-6 bg-black/30 backdrop-blur-sm">
-            <div className="hud-content">
-              <p className="text-[#FF4D00] font-mono text-xs md:text-sm tracking-wider">
-                // No skills to display
-              </p>
-              <p className="text-white/40 font-mono text-xs mt-2">
-                Categories: software, creative, tools, design, development (auto-detected)
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
