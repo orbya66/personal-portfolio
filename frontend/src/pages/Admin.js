@@ -208,9 +208,6 @@ function LoginForm({ onLogin }) {
             </button>
           </form>
           
-          <p className="text-white/30 font-mono text-xs text-center mt-6">
-            Default password: orbya2024
-          </p>
         </div>
       </div>
     </div>
