@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GlitchText from '../components/GlitchText';
 import { Mail, Linkedin, Instagram, Youtube, Send, Radio, Shield, Clock } from 'lucide-react';
 import axios from 'axios';
@@ -13,6 +13,20 @@ export default function Contact() {
     message: '',
   });
   const [status, setStatus] = useState({ type: '', message: '' });
+  const [config, setConfig] = useState(null);
+
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/config`);
+        const data = await res.json();
+        setConfig(data);
+      } catch (err) {
+        console.error('Failed to load config:', err);
+      }
+    };
+    fetchConfig();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +36,6 @@ export default function Contact() {
       await axios.post(`${BACKEND_URL}/api/contact`, formData);
       setStatus({ type: 'success', message: 'MESSAGE TRANSMITTED SUCCESSFULLY' });
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
       setTimeout(() => setStatus({ type: '', message: '' }), 3000);
     } catch (error) {
       setStatus({ type: 'error', message: 'TRANSMISSION FAILED - RETRY' });
@@ -34,23 +47,22 @@ export default function Contact() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const social = config?.social || {};
   const socialLinks = [
-    { icon: Mail, label: 'Email', href: 'mailto:contact@orbya.com' },
-    { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com' },
-    { icon: Instagram, label: 'Instagram', href: 'https://instagram.com' },
-    { icon: Youtube, label: 'YouTube', href: 'https://youtube.com' },
-  ];
+    social.email && { icon: Mail, label: 'Email', href: `mailto:${social.email}`, display: social.email },
+    social.linkedin && { icon: Linkedin, label: 'LinkedIn', href: social.linkedin },
+    social.instagram && { icon: Instagram, label: 'Instagram', href: social.instagram },
+    social.youtube && { icon: Youtube, label: 'YouTube', href: social.youtube },
+  ].filter(Boolean);
 
   return (
     <div className="min-h-screen pt-16 grid-pattern relative">
-      {/* Decorative corner brackets */}
       <div className="fixed top-20 left-4 w-16 h-16 border-l-2 border-t-2 border-[#FF4D00]/20 pointer-events-none" />
       <div className="fixed top-20 right-4 w-16 h-16 border-r-2 border-t-2 border-[#FF4D00]/20 pointer-events-none" />
       <div className="fixed bottom-4 left-4 w-16 h-16 border-l-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
       <div className="fixed bottom-4 right-4 w-16 h-16 border-r-2 border-b-2 border-[#FF4D00]/20 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        {/* Header */}
         <div className="mb-10 text-center animate-fade-in-up">
           <div className="mb-4 flex items-center justify-center gap-4">
             <div className="hidden sm:block w-12 h-[1px] bg-gradient-to-r from-transparent to-[#FF4D00]/50" />
@@ -68,84 +80,53 @@ export default function Contact() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
+          <div className="lg:col-span-2 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
             <div className="hud-frame p-6 md:p-8 bg-black/50 backdrop-blur-sm">
               <div className="hud-content">
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5" data-testid="contact-form">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
-                        NAME
-                      </label>
+                      <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">NAME</label>
                       <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
+                        type="text" name="name" value={formData.name} onChange={handleChange} required
                         className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none transition-colors"
-                        placeholder="Enter name..."
-                        data-testid="contact-name-input"
+                        placeholder="Enter name..." data-testid="contact-name-input"
                       />
                     </div>
-
                     <div>
-                      <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
-                        EMAIL
-                      </label>
+                      <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">EMAIL</label>
                       <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
+                        type="email" name="email" value={formData.email} onChange={handleChange} required
                         className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none transition-colors"
-                        placeholder="Enter email..."
-                        data-testid="contact-email-input"
+                        placeholder="Enter email..." data-testid="contact-email-input"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
-                      SUBJECT
-                    </label>
+                    <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">SUBJECT</label>
                     <input
-                      type="text"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      required
+                      type="text" name="subject" value={formData.subject} onChange={handleChange} required
                       className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none transition-colors"
-                      placeholder="Enter subject..."
-                      data-testid="contact-subject-input"
+                      placeholder="Enter subject..." data-testid="contact-subject-input"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">
-                      MESSAGE
-                    </label>
+                    <label className="block text-[#FF4D00] font-mono text-xs tracking-widest mb-2">MESSAGE</label>
                     <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      rows={5}
+                      name="message" value={formData.message} onChange={handleChange} required rows={5}
                       className="w-full bg-black/50 border border-[#FF4D00]/30 focus:border-[#FF4D00] px-4 py-3 text-white font-mono text-sm outline-none resize-none transition-colors"
-                      placeholder="Enter message..."
-                      data-testid="contact-message-input"
+                      placeholder="Enter message..." data-testid="contact-message-input"
                     />
                   </div>
 
                   {status.message && (
                     <div
                       className={`p-4 border font-mono text-xs tracking-wider transition-opacity duration-300 ${
-                        status.type === 'success'
-                          ? 'border-[#00FF00] text-[#00FF00] bg-[#00FF00]/10'
-                          : status.type === 'error'
-                          ? 'border-red-500 text-red-500 bg-red-500/10'
-                          : 'border-[#FF4D00] text-[#FF4D00] bg-[#FF4D00]/10'
+                        status.type === 'success' ? 'border-[#00FF00] text-[#00FF00] bg-[#00FF00]/10'
+                        : status.type === 'error' ? 'border-red-500 text-red-500 bg-red-500/10'
+                        : 'border-[#FF4D00] text-[#FF4D00] bg-[#FF4D00]/10'
                       }`}
                       data-testid="contact-status-message"
                     >
@@ -154,14 +135,12 @@ export default function Contact() {
                   )}
 
                   <button
-                    type="submit"
-                    disabled={status.type === 'loading'}
+                    type="submit" disabled={status.type === 'loading'}
                     className="relative group w-full flex items-center justify-center gap-3 px-8 py-4 bg-black/50 border-2 border-[#FF4D00] text-[#FF4D00] font-['Rajdhani'] font-bold text-lg tracking-wider uppercase hover:bg-[#FF4D00] hover:text-black transition-all duration-300 disabled:opacity-50"
                     data-testid="contact-submit-btn"
                   >
                     <Send className="w-5 h-5" strokeWidth={2} />
                     <span>{status.type === 'loading' ? 'TRANSMITTING...' : 'SEND MESSAGE'}</span>
-                    
                     <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#FF4D00]" />
                     <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-[#FF4D00]" />
                     <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-[#FF4D00]" />
@@ -172,7 +151,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="space-y-4 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+          <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
             <div className="hud-frame p-5 bg-black/50 backdrop-blur-sm">
               <div className="hud-content">
                 <div className="flex items-center gap-3 mb-4">
@@ -181,13 +160,14 @@ export default function Contact() {
                     Social Channels
                   </h3>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2" data-testid="social-links-container">
                   {socialLinks.map((link) => (
                     <a
                       key={link.label}
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
+                      data-testid={`social-link-${link.label.toLowerCase()}`}
                       className="flex items-center gap-3 p-3 border border-[#FF4D00]/30 hover:border-[#FF4D00] hover:bg-[#FF4D00]/10 transition-all group"
                     >
                       <link.icon className="w-5 h-5 text-[#FF4D00]" strokeWidth={1.5} />
@@ -244,10 +224,12 @@ export default function Contact() {
                 </div>
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-3 h-3 bg-[#00FF00] rounded-full animate-pulse" />
-                  <span className="text-white font-mono text-sm">Currently Available</span>
+                  <span className="text-white font-mono text-sm">
+                    {config?.availability === 'AVAILABLE' ? 'Currently Available' : config?.availability || 'Currently Available'}
+                  </span>
                 </div>
                 <p className="text-white/50 font-mono text-xs">
-                  Open to new projects and collaborations
+                  {config?.workType || 'Open to new projects and collaborations'}
                 </p>
               </div>
             </div>
