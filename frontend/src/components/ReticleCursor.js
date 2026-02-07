@@ -60,6 +60,19 @@ function ReticleCursor() {
     };
   }, []);
 
+  // Calculate equilateral triangle vertices centered at (50, 50)
+  // For an equilateral triangle with center at origin:
+  // Vertices at angles 270° (top), 30° (bottom-right), 150° (bottom-left)
+  const getTrianglePoints = (centerX, centerY, radius) => {
+    const angles = [270, 30, 150]; // degrees
+    return angles.map(angle => {
+      const rad = (angle * Math.PI) / 180;
+      const x = centerX + radius * Math.cos(rad);
+      const y = centerY + radius * Math.sin(rad);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+  };
+
   return (
     <>
       {/* Motion Trail - Smooth fade based on age */}
@@ -91,9 +104,10 @@ function ReticleCursor() {
           >
             {/* Circular trail particles */}
             <div 
-              className="w-3 h-3 rounded-full bg-[#FF4D00]" 
+              className="w-3 h-3 rounded-full"
               style={{ 
-                boxShadow: '0 0 10px rgba(255, 77, 0, 0.8)',
+                backgroundColor: 'var(--primary, #FF4D00)',
+                boxShadow: '0 0 10px var(--primary, #FF4D00)',
                 filter: 'blur(0.5px)'
               }}
             />
@@ -101,7 +115,7 @@ function ReticleCursor() {
         );
       })}
 
-      {/* Mark 3 Arc Reactor Cursor - Reduced glow */}
+      {/* Mark 3 Arc Reactor Cursor - Fixed alignment */}
       <div
         className="fixed pointer-events-none z-[10000]"
         style={{
@@ -128,20 +142,22 @@ function ReticleCursor() {
             </radialGradient>
           </defs>
           
-          {/* Outer triangular ring */}
+          {/* Outer triangular ring - FIXED: Centered equilateral triangle */}
           <polygon 
-            points="50,15 80,70 20,70" 
+            points={getTrianglePoints(50, 50, 38)}
             fill="none" 
             stroke="#FF4D00" 
             strokeWidth="2"
             opacity="0.6"
-            className="animate-spin-slow"
-            style={{ transformOrigin: '50px 50px' }}
+            style={{ 
+              transformOrigin: '50px 50px',
+              animation: 'cursor-spin 8s linear infinite'
+            }}
           />
           
-          {/* Middle triangular ring */}
+          {/* Middle triangular ring - FIXED: Centered */}
           <polygon 
-            points="50,25 70,62 30,62" 
+            points={getTrianglePoints(50, 50, 28)}
             fill="none" 
             stroke="#FF4D00" 
             strokeWidth="2.5"
@@ -149,28 +165,15 @@ function ReticleCursor() {
             filter="url(#glow)"
           />
           
-          {/* Inner triangle details - the mechanical structure */}
-          <g opacity="0.9">
-            {/* Top vertex lines */}
-            <line x1="50" y1="32" x2="50" y2="25" stroke="#FF4D00" strokeWidth="2" />
-            
-            {/* Side structural lines */}
-            <line x1="38" y1="55" x2="32" y2="60" stroke="#FF4D00" strokeWidth="1.5" />
-            <line x1="62" y1="55" x2="68" y2="60" stroke="#FF4D00" strokeWidth="1.5" />
-            
-            {/* Bottom structural line */}
-            <line x1="35" y1="60" x2="65" y2="60" stroke="#FF4D00" strokeWidth="2" />
-          </g>
-          
-          {/* Inner core triangle - glowing */}
+          {/* Inner core triangle - FIXED: Centered */}
           <polygon 
-            points="50,35 62,55 38,55" 
+            points={getTrianglePoints(50, 50, 18)}
             fill="url(#coreGradient)" 
             filter="url(#glow)"
             className="animate-arc-pulse"
           />
           
-          {/* Center energy core */}
+          {/* Center energy core - Perfectly centered */}
           <circle 
             cx="50" 
             cy="50" 
@@ -180,18 +183,24 @@ function ReticleCursor() {
             filter="url(#glow)"
           />
           
-          {/* Rotating energy particles */}
-          <g className="animate-spin-slow" style={{ transformOrigin: '50px 50px' }}>
-            <circle cx="50" cy="30" r="2" fill="#FF4D00" opacity="0.8" />
-            <circle cx="65" cy="60" r="2" fill="#FF4D00" opacity="0.8" />
-            <circle cx="35" cy="60" r="2" fill="#FF4D00" opacity="0.8" />
+          {/* Rotating energy particles - on outer ring */}
+          <g style={{ 
+            transformOrigin: '50px 50px',
+            animation: 'cursor-spin 6s linear infinite'
+          }}>
+            <circle cx="50" cy="12" r="2" fill="#FF4D00" opacity="0.8" />
+            <circle cx="83" cy="69" r="2" fill="#FF4D00" opacity="0.8" />
+            <circle cx="17" cy="69" r="2" fill="#FF4D00" opacity="0.8" />
           </g>
           
           {/* Counter-rotating outer particles */}
-          <g className="animate-spin-reverse" style={{ transformOrigin: '50px 50px' }}>
-            <circle cx="50" cy="20" r="1.5" fill="#FFB366" opacity="0.6" />
-            <circle cx="75" cy="65" r="1.5" fill="#FFB366" opacity="0.6" />
-            <circle cx="25" cy="65" r="1.5" fill="#FFB366" opacity="0.6" />
+          <g style={{ 
+            transformOrigin: '50px 50px',
+            animation: 'cursor-spin-reverse 10s linear infinite'
+          }}>
+            <circle cx="50" cy="8" r="1.5" fill="#FFB366" opacity="0.6" />
+            <circle cx="86" cy="71" r="1.5" fill="#FFB366" opacity="0.6" />
+            <circle cx="14" cy="71" r="1.5" fill="#FFB366" opacity="0.6" />
           </g>
         </svg>
       </div>
@@ -205,8 +214,23 @@ function ReticleCursor() {
           transform: 'translate(-50%, -50%)',
         }}
       >
-        <div className="w-[100px] h-[100px] rounded-full bg-[#FF4D00] opacity-10 blur-2xl" />
+        <div 
+          className="w-[100px] h-[100px] rounded-full opacity-10 blur-2xl" 
+          style={{ backgroundColor: 'var(--primary, #FF4D00)' }}
+        />
       </div>
+
+      {/* CSS for cursor animations */}
+      <style>{`
+        @keyframes cursor-spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes cursor-spin-reverse {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+      `}</style>
     </>
   );
 }
