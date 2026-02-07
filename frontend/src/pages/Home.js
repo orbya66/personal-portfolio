@@ -58,7 +58,7 @@ function VideoModal({ project, onClose }) {
                   src={embedUrl}
                   className="w-full h-full"
                   frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                   title={project.title}
                 />
@@ -68,6 +68,8 @@ function VideoModal({ project, onClose }) {
                   className="w-full h-full"
                   controls
                   autoPlay
+                  muted
+                  playsInline
                   poster={project.thumbnail}
                 >
                   Your browser does not support the video tag.
