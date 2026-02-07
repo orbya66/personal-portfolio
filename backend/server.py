@@ -573,7 +573,7 @@ async def upload_file(file: UploadFile = File(...)):
     if not is_image and not is_video:
         raise HTTPException(
             status_code=400, 
-            detail=f"File type not allowed. Allowed: images (jpeg, png, gif, webp) and videos (mp4, webm, mov, avi)"
+            detail="File type not allowed. Allowed: images (jpeg, png, gif, webp) and videos (mp4, webm, mov, avi)"
         )
     
     # Generate unique filename
