@@ -1047,7 +1047,7 @@ export default function Admin() {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-16">
+    <div className="min-h-screen bg-black pt-16 admin-page">
       {/* Header */}
       <div className="fixed top-16 left-0 right-0 z-40 bg-black border-b border-orange-500/30">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
