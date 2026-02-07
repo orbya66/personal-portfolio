@@ -33,6 +33,12 @@ app = FastAPI()
 # Mount static files for uploads
 app.mount("/static", StaticFiles(directory=str(ROOT_DIR / "static")), name="static")
 
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
+
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
