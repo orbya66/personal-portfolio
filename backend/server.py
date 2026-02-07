@@ -621,7 +621,7 @@ async def list_media():
             if file.is_file():
                 media["images"].append({
                     "filename": file.name,
-                    "url": f"/static/uploads/images/{file.name}",
+                    "url": f"/api/uploads/images/{file.name}",
                     "size": os.path.getsize(file),
                     "modified": datetime.fromtimestamp(os.path.getmtime(file)).isoformat()
                 })
@@ -633,7 +633,7 @@ async def list_media():
             if file.is_file():
                 media["videos"].append({
                     "filename": file.name,
-                    "url": f"/static/uploads/videos/{file.name}",
+                    "url": f"/api/uploads/videos/{file.name}",
                     "size": os.path.getsize(file),
                     "modified": datetime.fromtimestamp(os.path.getmtime(file)).isoformat()
                 })
