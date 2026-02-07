@@ -354,7 +354,10 @@ export default function Home() {
             // Single landscape video
             <div className="max-w-5xl mx-auto mb-12">
               {featuredProjects.length > 0 && (
-                <div className="hud-frame bg-black/50 backdrop-blur-sm overflow-hidden group">
+                <div 
+                  className="hud-frame bg-black/50 backdrop-blur-sm overflow-hidden group cursor-pointer"
+                  onClick={() => handlePlayClick(featuredProjects[0])}
+                >
                   <div className="hud-content aspect-video relative">
                     <img 
                       src={featuredProjects[0].thumbnail} 
@@ -363,7 +366,7 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-20 h-20 rounded-full bg-[#FF4D00]/20 backdrop-blur-sm flex items-center justify-center border-2 border-[#FF4D00]">
+                      <div className="w-20 h-20 rounded-full bg-[#FF4D00]/20 backdrop-blur-sm flex items-center justify-center border-2 border-[#FF4D00] hover:scale-110 transition-transform">
                         <Play className="w-10 h-10 text-[#FF4D00] ml-1" fill="#FF4D00" />
                       </div>
                     </div>
@@ -383,7 +386,11 @@ export default function Home() {
             // Three vertical videos
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {featuredProjects.slice(0, 3).map((project, index) => (
-                <div key={project.id} className="hud-frame bg-black/50 backdrop-blur-sm overflow-hidden group">
+                <div 
+                  key={project.id} 
+                  className="hud-frame bg-black/50 backdrop-blur-sm overflow-hidden group cursor-pointer"
+                  onClick={() => handlePlayClick(project)}
+                >
                   <div className="hud-content aspect-[9/16] relative">
                     <img 
                       src={project.thumbnail} 
@@ -392,7 +399,7 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-16 h-16 rounded-full bg-[#FF4D00]/20 backdrop-blur-sm flex items-center justify-center border-2 border-[#FF4D00]">
+                      <div className="w-16 h-16 rounded-full bg-[#FF4D00]/20 backdrop-blur-sm flex items-center justify-center border-2 border-[#FF4D00] hover:scale-110 transition-transform">
                         <Play className="w-8 h-8 text-[#FF4D00] ml-1" fill="#FF4D00" />
                       </div>
                     </div>
