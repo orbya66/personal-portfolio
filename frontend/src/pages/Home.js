@@ -40,6 +40,7 @@ function VideoModal({ project, onClose }) {
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
       onClick={onClose}
+      style={{ cursor: 'auto' }}
     >
       <div className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
         <button
