@@ -12,8 +12,8 @@ function VideoModal({ project, onClose }) {
   const getEmbedUrl = (url) => {
     if (!url) return null;
     
-    // YouTube
-    const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    // YouTube (including Shorts)
+    const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
     if (youtubeMatch) {
       return `https://www.youtube.com/embed/${youtubeMatch[1]}?autoplay=1&rel=0`;
     }
