@@ -595,8 +595,8 @@ async def upload_file(file: UploadFile = File(...)):
     # Get file info
     file_size = os.path.getsize(file_path)
     
-    # Build URL - use the base URL from environment or relative path
-    relative_url = f"/static/uploads/{subfolder}/{unique_filename}"
+    # Build URL - use /api/uploads path for ingress compatibility
+    relative_url = f"/api/uploads/{subfolder}/{unique_filename}"
     
     return {
         "success": True,
