@@ -1047,32 +1047,34 @@ export default function Admin() {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-16 admin-page">
-      {/* Header */}
-      <div className="fixed top-16 left-0 right-0 z-40 bg-black border-b border-orange-500/30">
+    <div className="min-h-screen bg-black admin-page">
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-40 bg-black border-b border-orange-500/30">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Settings className="w-6 h-6 text-orange-500" />
-            <h1 className="font-['Rajdhani'] text-xl font-bold text-white uppercase tracking-wider">Admin</h1>
+            <h1 className="font-['Rajdhani'] text-xl font-bold text-white uppercase tracking-wider">Admin Panel</h1>
           </div>
-          <button onClick={() => { setIsAuthenticated(false); sessionStorage.removeItem('adminAuth'); }} className="flex items-center gap-2 px-4 py-2 border border-orange-500/30 text-white font-mono text-sm hover:border-orange-500 transition-colors">
-            <LogOut className="w-4 h-4" /> Logout
-          </button>
+          <div className="flex items-center gap-4">
+            <a href="/" className="text-white/60 font-mono text-sm hover:text-orange-500 transition-colors">View Site</a>
+            <button onClick={() => { setIsAuthenticated(false); sessionStorage.removeItem('adminAuth'); }} className="flex items-center gap-2 px-4 py-2 bg-orange-500/10 border border-orange-500/30 text-orange-500 font-mono text-sm hover:bg-orange-500/20 hover:border-orange-500 transition-all" data-testid="admin-logout-btn">
+              <LogOut className="w-4 h-4" /> Logout
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Tabs */}
-      <div className="fixed top-[108px] left-0 right-0 z-30 bg-black border-b border-orange-500/30">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex gap-1 overflow-x-auto py-2 -mx-4 px-4">
+        {/* Tabs - inside the same sticky container */}
+        <div className="max-w-7xl mx-auto px-4 border-t border-orange-500/10">
+          <div className="flex gap-1 overflow-x-auto py-2">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
+                data-testid={`admin-tab-${tab.id}`}
                 className={`flex items-center gap-2 px-4 py-2 font-mono text-sm whitespace-nowrap transition-all ${
                   activeTab === tab.id 
-                    ? 'bg-orange-500 text-black' 
-                    : 'text-white/60 hover:text-orange-500'
+                    ? 'bg-orange-500 text-black font-bold' 
+                    : 'text-white/60 hover:text-orange-500 hover:bg-orange-500/5'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -1084,7 +1086,7 @@ export default function Admin() {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 pt-36 pb-12">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {renderContent()}
       </div>
     </div>
