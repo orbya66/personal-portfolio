@@ -1,24 +1,42 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 function ReticleCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [trail, setTrail] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
+  const [isOverIframe, setIsOverIframe] = useState(false);
   const animationFrameRef = useRef(null);
+
+  // Detect if mouse is near/over an iframe or video embed
+  const checkIframeProximity = useCallback((x, y) => {
+    const iframes = document.querySelectorAll('iframe, video, embed, object');
+    for (const el of iframes) {
+      const rect = el.getBoundingClientRect();
+      // Small padding so cursor hides slightly before reaching the iframe
+      const pad = 5;
+      if (
+        x >= rect.left - pad && x <= rect.right + pad &&
+        y >= rect.top - pad && y <= rect.bottom + pad
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       const newPosition = { x: e.clientX, y: e.clientY };
       setMousePosition(newPosition);
+      setIsOverIframe(checkIframeProximity(e.clientX, e.clientY));
       
-      // Add to trail with timestamp
       setTrail(prevTrail => {
         const newTrail = [...prevTrail, { 
           ...newPosition, 
           id: Date.now() + Math.random(),
           timestamp: Date.now()
         }];
-        return newTrail.slice(-25); // Keep last 25 points
+        return newTrail.slice(-25);
       });
     };
 
@@ -37,11 +55,9 @@ function ReticleCursor() {
       }
     };
 
-    // Smooth fade-out animation
     const fadeTrail = () => {
       setTrail(prevTrail => {
         const now = Date.now();
-        // Remove points older than 800ms (smooth fade duration)
         return prevTrail.filter(point => now - point.timestamp < 800);
       });
       animationFrameRef.current = requestAnimationFrame(fadeTrail);
@@ -58,7 +74,10 @@ function ReticleCursor() {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
+  }, [checkIframeProximity]);
+
+  // Hide cursor when over iframes/videos
+  if (isOverIframe) return null;
 
   // Calculate equilateral triangle vertices centered at (50, 50)
   // For an equilateral triangle with center at origin:
