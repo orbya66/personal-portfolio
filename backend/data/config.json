@@ -1,13 +1,13 @@
 {
   "siteName": "ORBYA",
   "ownerName": "SHRUNIT SHIRKE",
-  "tagline": "CINEMATIC VIDEO EDITOR • MOTION DESIGNER • VISUAL STORYTELLER",
+  "tagline": "CINEMATIC VIDEO EDITOR \u2022 MOTION DESIGNER \u2022 VISUAL STORYTELLER \u2022 AI Video Creator",
   "description": "Crafting high-impact visual experiences through precision editing and motion graphics",
   "systemId": "ORBYA-V2.0",
   "location": "INDIA",
   "status": "ONLINE",
   "availability": "AVAILABLE",
-  "workType": "FREELANCE",
+  "workType": "FREELANCE \u2022 Full Time \u2022 Part Time",
   "colors": {
     "primary": "#FF4D00",
     "background": "#000000",
@@ -18,10 +18,10 @@
     "error": "#FF0000"
   },
   "social": {
-    "email": "contact@orbya.com",
-    "linkedin": "https://linkedin.com",
-    "instagram": "https://instagram.com",
-    "youtube": "https://youtube.com"
+    "email": "shrunitshirke2004@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/shrunit-shirke-1400b231a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
+    "instagram": "https://www.instagram.com/orbya_shirke?igsh=MnY3bmpvejFwaTU5&utm_source=qr",
+    "youtube": "https://youtube.com/@orbyashirke?si=ARv2jDc6SJfnvEQE"
   },
   "adminPassword": "orbya2024"
 }
