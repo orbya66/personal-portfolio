@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Play, X, ExternalLink, Calendar, Tag } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Play } from 'lucide-react';
 
 function ProjectCard({ project, index, onPlayClick }) {
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const videoRef = useRef(null);
 
   // Determine aspect ratio based on project.aspectRatio or default to 16:9
   const getAspectClass = () => {
@@ -32,17 +33,41 @@ function ProjectCard({ project, index, onPlayClick }) {
     }
   };
 
+  // Check if video URL is a direct video file (mp4, webm, etc.)
+  const isDirectVideo = (url) => {
+    if (!url) return false;
+    return url.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i) || 
+           url.includes('/static/uploads/videos/');
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    // Auto-play video preview on hover if it's a direct video
+    if (videoRef.current && isDirectVideo(project.videoUrl)) {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    // Pause video on mouse leave
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
   return (
     <div
       className="break-inside-avoid mb-4 relative group opacity-0 animate-fade-in-up"
       style={{ animationDelay: `${Math.min(index * 0.1, 1)}s`, animationFillMode: 'forwards' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       data-testid={`project-card-${project.id}`}
     >
       <div className="hud-frame overflow-hidden bg-black/50 backdrop-blur-sm">
         <div className="hud-content">
-          {/* Image Container - Dynamic Aspect Ratio */}
+          {/* Image/Video Container - Dynamic Aspect Ratio */}
           <div className={`relative ${getAspectClass()} overflow-hidden bg-black/80`}>
             {/* Loading placeholder */}
             {!imageLoaded && (
@@ -51,13 +76,27 @@ function ProjectCard({ project, index, onPlayClick }) {
               </div>
             )}
             
+            {/* Thumbnail Image */}
             <img
               src={project.thumbnail}
               alt={project.title}
-              className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'} ${isHovered && isDirectVideo(project.videoUrl) ? 'opacity-0' : ''}`}
               onLoad={() => setImageLoaded(true)}
               loading="lazy"
             />
+
+            {/* Video Preview (shows on hover for direct videos) */}
+            {isDirectVideo(project.videoUrl) && (
+              <video
+                ref={videoRef}
+                src={project.videoUrl}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
+            )}
 
             {/* Hover Overlay */}
             <div 
@@ -74,12 +113,12 @@ function ProjectCard({ project, index, onPlayClick }) {
               {project.videoUrl && (
                 <div className="relative z-10 text-center">
                   <div className={`transition-transform duration-300 ${isHovered ? 'scale-100' : 'scale-0'}`}>
-                    <div className="w-16 h-16 rounded-full bg-[#FF4D00]/20 backdrop-blur-sm flex items-center justify-center border-2 border-[#FF4D00] group-hover:bg-[#FF4D00]/30 transition-colors">
+                    <div className="w-16 h-16 rounded-full bg-[#FF4D00]/20 backdrop-blur-sm flex items-center justify-center border-2 border-[#FF4D00] group-hover:bg-[#FF4D00]/30 transition-colors hover:scale-110">
                       <Play className="w-8 h-8 text-[#FF4D00] ml-1" fill="#FF4D00" />
                     </div>
                   </div>
                   <p className="text-[#FF4D00] font-mono text-xs tracking-widest mt-3">
-                    PLAY_VIDEO
+                    {isDirectVideo(project.videoUrl) ? 'CLICK_TO_EXPAND' : 'PLAY_VIDEO'}
                   </p>
                 </div>
               )}
