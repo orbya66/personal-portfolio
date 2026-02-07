@@ -1,9 +1,93 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import GlitchText from '../components/GlitchText';
-import { ArrowRight, Video, Code, Mail, Play, Target, Zap, Activity } from 'lucide-react';
+import { ArrowRight, Video, Code, Mail, Play, Target, Zap, Activity, X } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+// Video Modal Component
+function VideoModal({ project, onClose }) {
+  if (!project) return null;
+
+  const getEmbedUrl = (url) => {
+    if (!url) return null;
+    
+    // YouTube
+    const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    if (youtubeMatch) {
+      return `https://www.youtube.com/embed/${youtubeMatch[1]}?autoplay=1&rel=0`;
+    }
+    
+    // Vimeo
+    const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+    if (vimeoMatch) {
+      return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`;
+    }
+    
+    // Google Drive
+    const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (driveMatch) {
+      return `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+    }
+    
+    return url;
+  };
+
+  const embedUrl = getEmbedUrl(project.videoUrl);
+  const isEmbed = embedUrl?.includes('youtube') || embedUrl?.includes('vimeo') || embedUrl?.includes('drive.google');
+
+  return (
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4"
+      onClick={onClose}
+    >
+      <div className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
+        <button
+          onClick={onClose}
+          className="absolute -top-12 right-0 p-2 text-white/60 hover:text-[#FF4D00] transition-colors"
+        >
+          <X className="w-8 h-8" />
+        </button>
+
+        <div className="hud-frame bg-black overflow-hidden">
+          <div className="hud-content">
+            <div className="aspect-video bg-black">
+              {isEmbed ? (
+                <iframe
+                  src={embedUrl}
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={project.title}
+                />
+              ) : (
+                <video
+                  src={embedUrl}
+                  className="w-full h-full"
+                  controls
+                  autoPlay
+                  poster={project.thumbnail}
+                >
+                  Your browser does not support the video tag.
+                </video>
+              )}
+            </div>
+
+            <div className="p-6 bg-black/80 border-t border-[#FF4D00]/20">
+              <h3 className="text-white font-['Rajdhani'] text-2xl font-bold tracking-wide uppercase">
+                {project.title}
+              </h3>
+              <p className="text-[#FF4D00] font-mono text-sm tracking-widest mt-1">
+                {project.category} {project.year && `• ${project.year}`}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // HUD Data Display Component
 const HUDDataPoint = ({ label, value, position, delay = 0 }) => (
@@ -44,6 +128,7 @@ export default function Home() {
   const [quote, setQuote] = useState({ quote: '', author: '' });
   const [aspectRatio, setAspectRatio] = useState('16:9');
   const [systemTime, setSystemTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false }));
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
     // Update time every second
@@ -91,14 +176,33 @@ export default function Home() {
     fetchQuote();
   }, []);
 
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') setSelectedProject(null);
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
+
   const quickLinks = [
     { to: '/work', icon: Video, label: 'Projects', desc: 'THE VAULT' },
     { to: '/skills', icon: Code, label: 'Skills', desc: 'TECH SPECS' },
     { to: '/contact', icon: Mail, label: 'Contact', desc: 'COMMS' },
   ];
 
+  const handlePlayClick = (project) => {
+    if (project.videoUrl) {
+      setSelectedProject(project);
+    }
+  };
+
   return (
     <div className="min-h-screen pt-16 grid-pattern">
+      {/* Video Modal */}
+      {selectedProject && (
+        <VideoModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      )}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background with grid */}
         <div className="absolute inset-0 bg-black grid-pattern" />
