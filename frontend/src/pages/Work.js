@@ -9,14 +9,13 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 function VideoModal({ project, onClose }) {
   if (!project) return null;
 
-  // Detect video type (YouTube, Vimeo, or direct URL)
   const getEmbedUrl = (url) => {
     if (!url) return null;
     
     // YouTube
     const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
     if (youtubeMatch) {
-      return `https://www.youtube.com/embed/${youtubeMatch[1]}?autoplay=1`;
+      return `https://www.youtube.com/embed/${youtubeMatch[1]}?autoplay=1&rel=0`;
     }
     
     // Vimeo
@@ -25,12 +24,17 @@ function VideoModal({ project, onClose }) {
       return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`;
     }
     
-    // Direct video URL
+    // Google Drive
+    const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (driveMatch) {
+      return `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+    }
+    
     return url;
   };
 
   const embedUrl = getEmbedUrl(project.videoUrl);
-  const isEmbed = embedUrl?.includes('youtube') || embedUrl?.includes('vimeo');
+  const isEmbed = embedUrl?.includes('youtube') || embedUrl?.includes('vimeo') || embedUrl?.includes('drive.google');
 
   return (
     <div 
