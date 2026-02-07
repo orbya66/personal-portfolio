@@ -868,6 +868,8 @@ function ConfigManager() {
   const [config, setConfig] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [pwForm, setPwForm] = useState({ currentPassword: '', newPassword: '', confirm: '' });
+  const [pwStatus, setPwStatus] = useState({ type: '', msg: '' });
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/api/config`).then(r => r.json()).then(setConfig).finally(() => setLoading(false));
@@ -880,6 +882,35 @@ function ConfigManager() {
       if (res.ok) alert('Saved! Refresh to see changes.');
     } catch (err) { alert('Failed'); }
     finally { setSaving(false); }
+  };
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    if (pwForm.newPassword !== pwForm.confirm) {
+      setPwStatus({ type: 'error', msg: 'New passwords do not match' });
+      return;
+    }
+    if (pwForm.newPassword.length < 4) {
+      setPwStatus({ type: 'error', msg: 'Password must be at least 4 characters' });
+      return;
+    }
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/admin/password`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword: pwForm.currentPassword, newPassword: pwForm.newPassword })
+      });
+      if (res.ok) {
+        setPwStatus({ type: 'success', msg: 'Password changed successfully' });
+        setPwForm({ currentPassword: '', newPassword: '', confirm: '' });
+        sessionStorage.removeItem('adminAuth');
+      } else {
+        const data = await res.json();
+        setPwStatus({ type: 'error', msg: data.detail || 'Failed to change password' });
+      }
+    } catch (err) {
+      setPwStatus({ type: 'error', msg: 'Connection error' });
+    }
   };
 
   if (loading) return <div className="text-center py-8"><RefreshCw className="w-8 h-8 text-orange-500 animate-spin mx-auto" /></div>;
