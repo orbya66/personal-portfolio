@@ -87,3 +87,7 @@ backend/static/uploads/videos/46d77c0bcbce421384573a666aebe021.mp4
 # Environment files
 *.env
 *.env.*
+-e 
+# Environment files
+*.env
+*.env.*
