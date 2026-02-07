@@ -13,7 +13,18 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 function CursorWrapper() {
   const location = useLocation();
-  if (location.pathname === '/admin') return null;
+  const isAdmin = location.pathname === '/admin';
+
+  useEffect(() => {
+    if (isAdmin) {
+      document.body.classList.remove('portfolio-cursor');
+    } else {
+      document.body.classList.add('portfolio-cursor');
+    }
+    return () => document.body.classList.remove('portfolio-cursor');
+  }, [isAdmin]);
+
+  if (isAdmin) return null;
   return <ReticleCursor />;
 }
 
