@@ -4,6 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 function Navigation() {
   const location = useLocation();
 
+  // Hide navigation on admin page
+  if (location.pathname === '/admin') return null;
+
   const links = [
     { path: '/', label: 'HOME' },
     { path: '/work', label: 'THE VAULT' },
