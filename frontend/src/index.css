@@ -19,6 +19,16 @@
     cursor: none !important;
 }
 
+/* Restore default cursor for admin panel and video modals */
+.admin-page,
+.admin-page *,
+iframe,
+video,
+embed,
+object {
+    cursor: auto !important;
+}
+
 body {
     margin: 0;
     font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
