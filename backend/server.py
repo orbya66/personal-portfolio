@@ -217,14 +217,31 @@ async def get_project(project_id: int):
     return project
 
 
+import re as _re
+
+def _auto_youtube_thumbnail(video_url: str) -> str:
+    """Extract YouTube video ID and return thumbnail URL"""
+    if not video_url:
+        return ""
+    patterns = [
+        r'youtu\.be/([a-zA-Z0-9_-]+)',
+        r'youtube\.com/watch\?v=([a-zA-Z0-9_-]+)',
+        r'youtube\.com/shorts/([a-zA-Z0-9_-]+)',
+        r'youtube\.com/embed/([a-zA-Z0-9_-]+)',
+    ]
+    for p in patterns:
+        m = _re.search(p, video_url)
+        if m:
+            return f"https://img.youtube.com/vi/{m.group(1)}/hqdefault.jpg"
+    return ""
+
+
 @api_router.post("/projects", response_model=Project)
 async def create_project(project: ProjectCreate):
     """Add a new project"""
-    # Get the highest ID
     existing_projects = await db.projects.find({}, {"_id": 0, "id": 1}).to_list(1000)
     
     if not existing_projects:
-        # Check JSON file
         projects_file = ROOT_DIR / "data" / "projects.json"
         if projects_file.exists():
             with open(projects_file, 'r') as f:
@@ -234,6 +251,10 @@ async def create_project(project: ProjectCreate):
     new_id = max_id + 1
     
     project_dict = project.model_dump()
+    # Auto-generate YouTube thumbnail if none provided
+    if not project_dict.get("thumbnail") and project_dict.get("videoUrl"):
+        project_dict["thumbnail"] = _auto_youtube_thumbnail(project_dict["videoUrl"])
+    
     project_obj = Project(id=new_id, **project_dict)
     
     doc = project_obj.model_dump()
@@ -252,6 +273,9 @@ async def update_project(project_id: int, project: ProjectCreate):
     
     update_data = project.model_dump()
     update_data["id"] = project_id
+    # Auto-generate YouTube thumbnail if none provided
+    if not update_data.get("thumbnail") and update_data.get("videoUrl"):
+        update_data["thumbnail"] = _auto_youtube_thumbnail(update_data["videoUrl"])
     
     await db.projects.replace_one({"id": project_id}, update_data)
     
