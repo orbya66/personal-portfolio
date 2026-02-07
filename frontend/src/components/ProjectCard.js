@@ -46,8 +46,7 @@ function ProjectCard({ project, index, onPlayClick }) {
             <img
               src={thumbnailSrc}
               alt={project.title}
-              className="w-full h-full object-cover"
-              style={{ opacity: 1, transition: 'transform 0.5s' }}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               onError={() => setImageError(true)}
               loading="lazy"
             />
