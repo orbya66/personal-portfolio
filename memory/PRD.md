@@ -90,6 +90,10 @@ Build a high-end, multi-page portfolio website for video editor/motion designer 
 4. YouTube Shorts URLs parsed correctly (shorts/ -> embed/)
 5. File uploads served via /api/uploads/ (ingress-compatible)
 6. Noise overlay z-index reduced from 9999 to 1
+7. Admin layout restructured: single sticky header (no overlapping fixed bars)
+8. Navigation bar hidden on admin page for clean admin UX
+9. aspectRatio field added to Project model (was silently dropped)
+10. YouTube autoplay: added mute=1 for browser autoplay compliance
 
 ## Admin Access
 - URL: /admin
