@@ -944,6 +944,27 @@ function ConfigManager() {
           <div><label className="block text-white/60 font-mono text-xs mb-1">YouTube</label><input value={config.social?.youtube || ''} onChange={(e) => setConfig({...config, social: {...config.social, youtube: e.target.value}})} className="w-full bg-black border border-orange-500/30 px-3 py-2 text-white font-mono text-sm" /></div>
         </div>
       </div>
+      <div className="bg-black border-2 border-orange-500/50 p-6 space-y-4" data-testid="password-change-section">
+        <h3 className="text-orange-500 font-['Rajdhani'] font-bold uppercase flex items-center gap-2"><Lock className="w-4 h-4" /> Change Password</h3>
+        <form onSubmit={handlePasswordChange} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-white/60 font-mono text-xs mb-1">Current Password</label>
+            <input type="password" value={pwForm.currentPassword} onChange={(e) => setPwForm({...pwForm, currentPassword: e.target.value})} required className="w-full bg-black border border-orange-500/30 px-3 py-2 text-white font-mono text-sm" data-testid="current-password-input" />
+          </div>
+          <div>
+            <label className="block text-white/60 font-mono text-xs mb-1">New Password</label>
+            <input type="password" value={pwForm.newPassword} onChange={(e) => setPwForm({...pwForm, newPassword: e.target.value})} required className="w-full bg-black border border-orange-500/30 px-3 py-2 text-white font-mono text-sm" data-testid="new-password-input" />
+          </div>
+          <div>
+            <label className="block text-white/60 font-mono text-xs mb-1">Confirm New Password</label>
+            <input type="password" value={pwForm.confirm} onChange={(e) => setPwForm({...pwForm, confirm: e.target.value})} required className="w-full bg-black border border-orange-500/30 px-3 py-2 text-white font-mono text-sm" data-testid="confirm-password-input" />
+          </div>
+          <div className="md:col-span-3 flex items-center gap-4">
+            <button type="submit" className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-black font-mono text-sm font-bold hover:bg-orange-400 transition-colors" data-testid="change-password-btn"><Lock className="w-4 h-4" /> Change Password</button>
+            {pwStatus.msg && <span className={`font-mono text-xs ${pwStatus.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>{pwStatus.msg}</span>}
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
